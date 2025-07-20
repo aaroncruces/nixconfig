@@ -10,8 +10,9 @@
     ./system/static/packages.nix
     ./system/static/services.nix
     ./system/static/bootloader.nix
+    ./system/static/homemanager.nix
+
     ./system/dynamic/partitions.nix
-    ./system/dynamic/homemanager.nix
   ];
 
   # System state version
