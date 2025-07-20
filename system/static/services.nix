@@ -9,5 +9,4 @@
 
   # Explicitly disable display managers
   services.displayManager.sddm.enable = false;
-  services.displayManager.lightdm.enable = false;
 }
