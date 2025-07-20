@@ -163,10 +163,10 @@ cat << EOF > ./system/dynamic/partitions.nix
 }
 EOF
 
-# Step 11: Copy entire local directory to /mnt/etc/nixos/
+# Step 11: Copy entire local directory (including .git) to /mnt/etc/nixos/
 echo "Copying entire local directory (including .git) to /mnt/etc/nixos/..."
 mkdir -p /mnt/etc/nixos
-cp -r ./* /mnt/etc/nixos/ || { echo "Error: Failed to copy directory to /mnt/etc/nixos/" >&2; exit 1; }
+cp -r . /mnt/etc/nixos/ || { echo "Error: Failed to copy directory to /mnt/etc/nixos/" >&2; exit 1; }
 
 # Validate Nix syntax
 CONFIG_FILE="/mnt/etc/nixos/configuration.nix"
