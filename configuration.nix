@@ -3,16 +3,19 @@
 {
   imports = [
     ./hardware-configuration.nix
+
     ./system/static/networking.nix
     ./system/static/locale.nix
     ./system/static/desktop.nix
-    ./system/static/users.nix
     ./system/static/packages.nix
     ./system/static/services.nix
     ./system/static/bootloader.nix
-    ./system/static/homemanager.nix
 
     ./system/dynamic/partitions.nix
+
+    ./user/users.nix
+    ./user/services.nix
+    ./user/homemanager.nix
   ];
 
   # System state version

@@ -9,8 +9,7 @@ in
       (import "${home-manager}/nixos")
     ];
 
-  users.users.eve.isNormalUser = true;
-  home-manager.users.eve = { pkgs, ... }: {
+  home-manager.users.aaron = { pkgs, ... }: {
     home.packages = [ pkgs.atool pkgs.httpie ];
     programs.bash.enable = true;
   
