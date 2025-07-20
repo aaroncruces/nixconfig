@@ -12,6 +12,7 @@ in
   # Add home-manager to system packages
   environment.systemPackages = with pkgs; [
     home-manager
+    btop
   ];
   home-manager.users.aaron = { pkgs, ... }: {
     home.packages = [ pkgs.atool pkgs.httpie ];
