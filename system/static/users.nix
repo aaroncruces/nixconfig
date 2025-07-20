@@ -8,6 +8,9 @@
     shell = pkgs.zsh;
   };
 
+  # Enable zsh for proper shell integration
+  programs.zsh.enable = true;
+
   # Ensure zsh is installed
   environment.systemPackages = with pkgs; [
     zsh
