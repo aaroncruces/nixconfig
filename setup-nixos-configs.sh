@@ -10,12 +10,12 @@ fi
 while getopts "d:" opt; do
     case $opt in
         d) DEVICE="/dev/$OPTARG" ;;
-        *) echo "Usage: $0 -d <block-device> (e.g., -d sda)" >&2; exit 1 ;;
+        *) echo "Usage: $0 -d <block-device> (e.g., -d sda or -d nvme0n1)" >&2; exit 1 ;;
     esac
 done
 
 if [[ -z "$DEVICE" || "$DEVICE" == "/dev/" ]]; then
-    echo "Error: Block device not specified. Use -d <device> (e.g., -d sda)" >&2
+    echo "Error: Block device not specified. Use -d <device> (e.g., -d sda or -d nvme0n1)" >&2
     exit 1
 fi
 
@@ -34,6 +34,13 @@ if [[ ! -d "./system/static" ]]; then
     exit 1
 fi
 
+# Determine partition prefix (p for NVMe, empty for traditional)
+if [[ "$DEVICE" =~ /dev/nvme[0-9]+n[0-9]+$ ]]; then
+    PART_PREFIX="p"
+else
+    PART_PREFIX=""
+fi
+
 # Step 1: Unmount existing mounts under /mnt
 echo "Unmounting existing mounts under /mnt..."
 for mount in /mnt/boot /mnt/home /mnt/nix /mnt; do
@@ -43,17 +50,17 @@ for mount in /mnt/boot /mnt/home /mnt/nix /mnt; do
 done
 
 # Step 2: Wipe partitions (before block device)
-echo "Wiping filesystem signatures on partitions ${DEVICE}1 and ${DEVICE}2..."
+echo "Wiping filesystem signatures on partitions ${DEVICE}${PART_PREFIX}1 and ${DEVICE}${PART_PREFIX}2..."
 sync
-if [[ -b "${DEVICE}1" ]]; then
-    wipefs -a "${DEVICE}1" || { echo "Error: Failed to wipe ${DEVICE}1" >&2; exit 1; }
+if [[ -b "${DEVICE}${PART_PREFIX}1" ]]; then
+    wipefs -a "${DEVICE}${PART_PREFIX}1" || { echo "Error: Failed to wipe ${DEVICE}${PART_PREFIX}1" >&2; exit 1; }
 fi
-if [[ -b "${DEVICE}2" ]]; then
-    wipefs -a "${DEVICE}2" || { echo "Error: Failed to wipe ${DEVICE}2" >&2; exit 1; }
+if [[ -b "${DEVICE}${PART_PREFIX}2" ]]; then
+    wipefs -a "${DEVICE}${PART_PREFIX}2" || { echo "Error: Failed to wipe ${DEVICE}${PART_PREFIX}2" >&2; exit 1; }
 fi
 sync
-if blkid "${DEVICE}1" | grep -q "TYPE" 2>/dev/null || blkid "${DEVICE}2" | grep -q "TYPE" 2>/dev/null; then
-    echo "Error: Filesystem signatures still present on ${DEVICE}1 or ${DEVICE}2" >&2
+if blkid "${DEVICE}${PART_PREFIX}1" | grep -q "TYPE" 2>/dev/null || blkid "${DEVICE}${PART_PREFIX}2" | grep -q "TYPE" 2>/dev/null; then
+    echo "Error: Filesystem signatures still present on ${DEVICE}${PART_PREFIX}1 or ${DEVICE}${PART_PREFIX}2" >&2
     exit 1
 fi
 
@@ -75,35 +82,35 @@ parted "$DEVICE" -- set 1 esp on
 parted "$DEVICE" -- mkpart root btrfs 2049MiB 100%
 partprobe "$DEVICE" || { echo "Error: Failed to update partition table" >&2; exit 1; }
 sleep 2
-if [[ ! -b "${DEVICE}1" || ! -b "${DEVICE}2" ]]; then
-    echo "Error: Partitions ${DEVICE}1 or ${DEVICE}2 not found. Check lsblk:" >&2
+if [[ ! -b "${DEVICE}${PART_PREFIX}1" || ! -b "${DEVICE}${PART_PREFIX}2" ]]; then
+    echo "Error: Partitions ${DEVICE}${PART_PREFIX}1 or ${DEVICE}${PART_PREFIX}2 not found. Check lsblk:" >&2
     lsblk "$DEVICE"
     exit 1
 fi
 
 # Step 5: Format partitions
 echo "Formatting partitions..."
-mkfs.fat -F 32 -n BOOT "${DEVICE}1" || { echo "Error: Failed to format ${DEVICE}1" >&2; lsblk "$DEVICE"; exit 1; }
-mkfs.btrfs -f -L nixos "${DEVICE}2" || { echo "Error: Failed to format ${DEVICE}2" >&2; lsblk "$DEVICE"; exit 1; }
+mkfs.fat -F 32 -n BOOT "${DEVICE}${PART_PREFIX}1" || { echo "Error: Failed to format ${DEVICE}${PART_PREFIX}1" >&2; lsblk "$DEVICE"; exit 1; }
+mkfs.btrfs -f -L nixos "${DEVICE}${PART_PREFIX}2" || { echo "Error: Failed to format ${DEVICE}${PART_PREFIX}2" >&2; lsblk "$DEVICE"; exit 1; }
 
 # Step 6: Get UUID for both partitions
-echo "Retrieving UUID for ${DEVICE}1 and ${DEVICE}2..."
-BOOT_UUID=$(blkid -s UUID -o value "${DEVICE}1") || { echo "Error: Failed to retrieve UUID for ${DEVICE}1" >&2; exit 1; }
+echo "Retrieving UUID for ${DEVICE}${PART_PREFIX}1 and ${DEVICE}${PART_PREFIX}2..."
+BOOT_UUID=$(blkid -s UUID -o value "${DEVICE}${PART_PREFIX}1") || { echo "Error: Failed to retrieve UUID for ${DEVICE}${PART_PREFIX}1" >&2; exit 1; }
 if [[ -z "$BOOT_UUID" ]]; then
-    echo "Error: UUID not found for ${DEVICE}1" >&2
+    echo "Error: UUID not found for ${DEVICE}${PART_PREFIX}1" >&2
     exit 1
 fi
-echo "UUID for ${DEVICE}1: $BOOT_UUID"
-UUID=$(blkid -s UUID -o value "${DEVICE}2") || { echo "Error: Failed to retrieve UUID for ${DEVICE}2" >&2; exit 1; }
+echo "UUID for ${DEVICE}${PART_PREFIX}1: $BOOT_UUID"
+UUID=$(blkid -s UUID -o value "${DEVICE}${PART_PREFIX}2") || { echo "Error: Failed to retrieve UUID for ${DEVICE}${PART_PREFIX}2" >&2; exit 1; }
 if [[ -z "$UUID" ]]; then
-    echo "Error: UUID not found for ${DEVICE}2" >&2
+    echo "Error: UUID not found for ${DEVICE}${PART_PREFIX}2" >&2
     exit 1
 fi
-echo "UUID for ${DEVICE}2: $UUID"
+echo "UUID for ${DEVICE}${PART_PREFIX}2: $UUID"
 
 # Step 7: Create Btrfs subvolumes
 echo "Creating Btrfs subvolumes..."
-mount "${DEVICE}2" /mnt || { echo "Error: Failed to mount ${DEVICE}2" >&2; exit 1; }
+mount "${DEVICE}${PART_PREFIX}2" /mnt || { echo "Error: Failed to mount ${DEVICE}${PART_PREFIX}2" >&2; exit 1; }
 for subvol in @ @home @nix; do
     if btrfs subvolume list /mnt | grep -q "path $subvol$"; then
         btrfs subvolume delete "/mnt/$subvol" || { echo "Error: Failed to delete existing subvolume $subvol" >&2; umount /mnt; exit 1; }
@@ -117,11 +124,11 @@ umount /mnt
 # Step 8: Mount partitions with Btrfs options
 echo "Mounting partitions..."
 MOUNT_OPTS="compress=lzo,space_cache=v2,noatime,discard=async"
-mount -o "$MOUNT_OPTS,subvol=@" "${DEVICE}2" /mnt || { echo "Error: Failed to mount ${DEVICE}2" >&2; exit 1; }
+mount -o "$MOUNT_OPTS,subvol=@" "${DEVICE}${PART_PREFIX}2" /mnt || { echo "Error: Failed to mount ${DEVICE}${PART_PREFIX}2" >&2; exit 1; }
 mkdir -p /mnt/{boot,home,nix}
-mount "${DEVICE}1" /mnt/boot || { echo "Error: Failed to mount ${DEVICE}1" >&2; umount /mnt; exit 1; }
-mount -o "$MOUNT_OPTS,subvol=@home" "${DEVICE}2" /mnt/home || { echo "Error: Failed to mount ${DEVICE}2 for /home" >&2; umount /mnt/boot /mnt; exit 1; }
-mount -o "$MOUNT_OPTS,subvol=@nix" "${DEVICE}2" /mnt/nix || { echo "Error: Failed to mount ${DEVICE}2 for /nix" >&2; umount /mnt/boot /mnt/home /mnt; exit 1; }
+mount "${DEVICE}${PART_PREFIX}1" /mnt/boot || { echo "Error: Failed to mount ${DEVICE}${PART_PREFIX}1" >&2; umount /mnt; exit 1; }
+mount -o "$MOUNT_OPTS,subvol=@home" "${DEVICE}${PART_PREFIX}2" /mnt/home || { echo "Error: Failed to mount ${DEVICE}${PART_PREFIX}2 for /home" >&2; umount /mnt/boot /mnt; exit 1; }
+mount -o "$MOUNT_OPTS,subvol=@nix" "${DEVICE}${PART_PREFIX}2" /mnt/nix || { echo "Error: Failed to mount ${DEVICE}${PART_PREFIX}2 for /nix" >&2; umount /mnt/boot /mnt/home /mnt; exit 1; }
 
 # Step 9: Generate hardware configuration
 echo "Generating hardware configuration..."
