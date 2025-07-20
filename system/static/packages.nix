@@ -13,7 +13,5 @@
     binutils
     autoconf
     automake
-    polybar
-    dmenu
   ];
 }

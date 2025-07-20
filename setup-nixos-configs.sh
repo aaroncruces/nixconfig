@@ -127,7 +127,7 @@ mount -o "$MOUNT_OPTS,subvol=@nix" "${DEVICE}2" /mnt/nix || { echo "Error: Faile
 echo "Generating hardware configuration..."
 nixos-generate-config --root /mnt
 
-# Step 10: Create and copy configuration files
+# Step 10: Create system/dynamic/partitions.nix
 echo "Creating system/dynamic/partitions.nix..."
 mkdir -p ./system/dynamic
 cat << EOF > ./system/dynamic/partitions.nix
@@ -156,10 +156,10 @@ cat << EOF > ./system/dynamic/partitions.nix
 }
 EOF
 
-# Copy configuration.nix and system/ to /mnt/etc/nixos/
-echo "Copying ./configuration.nix and ./system/ to /mnt/etc/nixos/..."
+# Step 11: Copy entire local repo (including .git) to /mnt/etc/nixos/
+echo "Copying local repository (including .git) to /mnt/etc/nixos/..."
 mkdir -p /mnt/etc/nixos
-cp -r ./configuration.nix ./system /mnt/etc/nixos/ || { echo "Error: Failed to copy configuration files to /mnt/etc/nixos/" >&2; exit 1; }
+cp -r ./.git ./configuration.nix ./system /mnt/etc/nixos/ || { echo "Error: Failed to copy repository to /mnt/etc/nixos/" >&2; exit 1; }
 
 # Validate Nix syntax
 CONFIG_FILE="/mnt/etc/nixos/configuration.nix"
@@ -167,7 +167,7 @@ if [[ -f "$CONFIG_FILE" ]]; then
     if nix-instantiate --parse "$CONFIG_FILE" >/dev/null 2>&1; then
         echo "Configuration syntax is valid."
     else
-        echo "Error: Invalid Nix syntax in $CONFIG_FILE. Please check and edit manually." >&2
+        echo "Error: Invalid Nix syntax in $CONFIG_FILE. Ensure it includes ./hardware-configuration.nix and other imports." >&2
         exit 1
     fi
 else

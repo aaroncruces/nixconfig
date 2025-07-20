@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ./hardware-configuration.nix
     ./system/static/networking.nix
     ./system/static/locale.nix
     ./system/static/desktop.nix
