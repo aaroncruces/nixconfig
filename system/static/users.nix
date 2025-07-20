@@ -15,4 +15,5 @@
   environment.systemPackages = with pkgs; [
     zsh
   ];
+  nix.settings.allowed-users = [ "@wheel" ];
 }
