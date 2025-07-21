@@ -7,6 +7,6 @@
     polybar
     dmenu
     picom
-    xorg.xinit
+    (xorg // { recurseForDerivations = true; })
   ];
 }
