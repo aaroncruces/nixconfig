@@ -14,5 +14,6 @@
     autoconf
     automake
     stow
+    oh-my-posh
   ];
 }
