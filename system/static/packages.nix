@@ -15,5 +15,6 @@
     automake
     stow
     oh-my-posh
+    antidote
   ];
 }
