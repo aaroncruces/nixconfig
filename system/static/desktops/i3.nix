@@ -16,4 +16,13 @@
     xorg.xauth
     #xorg.xf86videointel # Replace with xorg.xf86videonvidia or xorg.xf86videoamdgpu if needed
   ];
+  services.xserver = {
+       enable = true;
+      #  windowManager.i3 = {
+      #    enable = true;
+      #    package = pkgs.i3;
+      #  };
+       videoDrivers = [ "modesetting" ]; # Let NixOS auto-detect the driver
+       exportConfiguration = true; # Optional: Ensures X config files are generated
+  };
 }
