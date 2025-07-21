@@ -13,5 +13,6 @@
     binutils
     autoconf
     automake
+    stow
   ];
 }
