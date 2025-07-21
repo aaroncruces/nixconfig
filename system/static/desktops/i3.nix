@@ -18,7 +18,7 @@
   ];
   ##THE CONFIG FILES AND XINITRC IS MANAGED BY STOW+GIT
   services.xserver = {
-      #  enable = true;
+       enable = true;
       #  windowManager.i3 = {
       #    enable = true;
       #    package = pkgs.i3;
