@@ -1,8 +1,5 @@
 { config, pkgs, lib, ... }:
 
-let
-  home-manager = builtins.fetchTarball https://github.com/nix-community/home-manager/archive/release-25.05.tar.gz;
-in
 {
   imports =
     [
@@ -12,10 +9,9 @@ in
   # Add home-manager to system packages
   environment.systemPackages = with pkgs; [
     home-manager
-    btop
   ];
   home-manager.users.aaron = { pkgs, ... }: {
-    home.packages = [ pkgs.atool pkgs.httpie ];
+    home.packages = [ pkgs.btop pkgs.httpie ];
     programs.bash.enable = true;
   
     # The state version is required and should stay at the version you
