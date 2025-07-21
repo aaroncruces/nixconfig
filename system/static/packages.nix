@@ -16,5 +16,6 @@
     stow
     oh-my-posh
     antidote
+    psmisc
   ];
 }
