@@ -16,8 +16,9 @@
     xorg.xauth
     #xorg.xf86videointel # Replace with xorg.xf86videonvidia or xorg.xf86videoamdgpu if needed
   ];
+  ##THE CONFIG FILES AND XINITRC IS MANAGED BY STOW+GIT
   services.xserver = {
-       enable = true;
+      #  enable = true;
       #  windowManager.i3 = {
       #    enable = true;
       #    package = pkgs.i3;
