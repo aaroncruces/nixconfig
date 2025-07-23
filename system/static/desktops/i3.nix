@@ -16,10 +16,9 @@
     };
   };
 
-  # NVIDIA settings (requires allowUnfree = true)
+  # NVIDIA settings (requires nixpkgs.config.allowUnfree = true)
   hardware.nvidia = {
-    enable = lib.mkIf (builtins.pathExists /sys/module/nvidia) true;
-    modesetting.enable = true;  # For Wayland (Hyprland/SDDM)
+    modesetting.enable = lib.mkIf (builtins.pathExists /sys/module/nvidia) true;  # For Wayland (Hyprland/SDDM)
     powerManagement.enable = false;  # Adjust for laptop power saving
     package = config.boot.kernelPackages.nvidiaPackages.stable;  # Stable driver
     # package = config.boot.kernelPackages.nvidiaPackages.beta;  # Uncomment for newer GPUs
