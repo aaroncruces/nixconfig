@@ -3,7 +3,7 @@
 {
   services.xserver.enable = true;
   services.xserver = {
-    videoDrivers = lib.mkIf (builtins.pathExists /sys/module/nvidia) [ "nvidia" ] [ "modesetting" ];
+    videoDrivers = if (builtins.pathExists /sys/module/nvidia) then [ "nvidia" ] else [ "modesetting" ];
     exportConfiguration = true;
     windowManager.i3 = {
       enable = true;
@@ -30,6 +30,6 @@
     enable32Bit = true;
   };
 
-  # VirtualBox guest additions (for Oracle VM) - No .x11 option needed; enable includes X11/video support
+  # VirtualBox guest additions (for Oracle VM)
   virtualisation.virtualbox.guest.enable = lib.mkIf (!(builtins.pathExists /sys/module/nvidia)) true;
 }
