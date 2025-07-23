@@ -1,6 +1,9 @@
 { config, lib, pkgs, ... }:
 
 {
+  # Allow non-free packages
+  nixpkgs.config.allowUnfree = true;
+  
   environment.systemPackages = with pkgs; [
     firefox
     htop

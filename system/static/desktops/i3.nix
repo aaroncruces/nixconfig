@@ -1,20 +1,36 @@
 { config, lib, pkgs, ... }:
 
 {
-  # Required for i3wm (X11-based)
-  services.xserver.enable = true;  
-  ##THE CONFIG FILES AND XINITRC IS MANAGED BY STOW+GIT
+  services.xserver.enable = true;
   services.xserver = {
-    videoDrivers = [ "modesetting" ]; # Let NixOS auto-detect the driver
-    exportConfiguration = true; # Optional: Ensures X config files are generated
+    videoDrivers = lib.mkIf (builtins.pathExists /sys/module/nvidia) [ "nvidia" ] [ "modesetting" ];
+    exportConfiguration = true;
     windowManager.i3 = {
       enable = true;
-      extraPackages = with pkgs; [  # Optional but recommended for a usable i3 setup
-        dmenu      # Application launcher
+      extraPackages = with pkgs; [
+        dmenu
         polybar
         picom
         xorg.xrandr
       ];
     };
   };
+
+  # NVIDIA settings
+  hardware.nvidia = {
+    enable = lib.mkIf (builtins.pathExists /sys/module/nvidia) true;
+    modesetting.enable = true;  # For Wayland
+    powerManagement.enable = false;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;  # Or .beta
+  };
+
+  # GPU acceleration
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+  };
+
+  # VirtualBox guest additions (for Oracle VM)
+  virtualisation.virtualbox.guest.enable = lib.mkIf (!(builtins.pathExists /sys/module/nvidia)) true;
+  virtualisation.virtualbox.guest.x11 = true;
 }

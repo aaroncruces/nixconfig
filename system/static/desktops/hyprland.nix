@@ -2,7 +2,17 @@
 
 {
   programs.hyprland = {
-    enable = true;  # Installs Hyprland and sets up Wayland session files
-    xwayland.enable = true;  # Enables XWayland for running X11 apps in Hyprland
+    enable = true;
+    xwayland.enable = true;
+    # Optional: NVIDIA patches for better Wayland support
+    nvidiaPatches = lib.mkIf (builtins.pathExists /sys/module/nvidia) true;
   };
+
+  # Ensure Wayland dependencies
+  environment.systemPackages = with pkgs; [
+    wayland
+    xwayland
+    libdrm
+    mesa
+  ];
 }

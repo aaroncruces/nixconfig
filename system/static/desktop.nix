@@ -1,21 +1,33 @@
 { config, lib, pkgs, ... }:
 
 {
-  # Import the current window manager (i3)
   imports = [
     ./desktops/i3.nix
     ./desktops/hyprland.nix
   ];
-  
-  # for i3 and hyprland
+
   services.displayManager.sddm = {
     enable = true;
-    # Enables Wayland session support in SDDM (for Hyprland)
-    wayland.enable = true;  
+    wayland.enable = true;
+    theme = "breeze";  # Reliable Qt-based theme
+    settings = {
+      Theme = {
+        CursorTheme = "breeze_cursors";  # Explicit cursor theme
+      };
+    };
   };
-  # display managers
-  # services.displayManager.sddm.enable = false;
-  # services.xserver.displayManager.sddm.enable = false;
-  # services.xserver.displayManager.lightdm.enable = false;
-  # services.xserver.displayManager.gdm.enable = false;
+
+  # Install SDDM dependencies and cursor theme
+  environment.systemPackages = with pkgs; [
+    qt5.qtquickcontrols2
+    qt5.qtgraphicaleffects
+    breeze-qt5  # Breeze theme and cursors
+    adwaita-icon-theme  # Fallback cursor theme
+  ];
+
+  # Set system-wide cursor for X11/Wayland
+  environment.variables = {
+    XCURSOR_THEME = "breeze_cursors";
+    XCURSOR_SIZE = "24";
+  };
 }
