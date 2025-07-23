@@ -17,5 +17,6 @@
     oh-my-posh
     antidote
     psmisc
+    kitty
   ];
 }
