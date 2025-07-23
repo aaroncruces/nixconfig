@@ -16,12 +16,13 @@
     };
   };
 
-  # NVIDIA settings
+  # NVIDIA settings (requires allowUnfree = true)
   hardware.nvidia = {
     enable = lib.mkIf (builtins.pathExists /sys/module/nvidia) true;
-    modesetting.enable = true;  # For Wayland
-    powerManagement.enable = false;
-    package = config.boot.kernelPackages.nvidiaPackages.stable;  # Or .beta
+    modesetting.enable = true;  # For Wayland (Hyprland/SDDM)
+    powerManagement.enable = false;  # Adjust for laptop power saving
+    package = config.boot.kernelPackages.nvidiaPackages.stable;  # Stable driver
+    # package = config.boot.kernelPackages.nvidiaPackages.beta;  # Uncomment for newer GPUs
   };
 
   # GPU acceleration
