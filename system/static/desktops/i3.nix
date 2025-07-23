@@ -30,7 +30,6 @@
     enable32Bit = true;
   };
 
-  # VirtualBox guest additions (for Oracle VM)
+  # VirtualBox guest additions (for Oracle VM) - No .x11 option needed; enable includes X11/video support
   virtualisation.virtualbox.guest.enable = lib.mkIf (!(builtins.pathExists /sys/module/nvidia)) true;
-  virtualisation.virtualbox.guest.x11 = true;
 }
