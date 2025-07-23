@@ -7,9 +7,11 @@
     ./desktops/hyprland.nix
   ];
   
+  # for i3 and hyprland
   services.displayManager.sddm = {
     enable = true;
-    wayland.enable = true;  # Enables Wayland session support in SDDM (for Hyprland)
+    # Enables Wayland session support in SDDM (for Hyprland)
+    wayland.enable = true;  
   };
   # display managers
   # services.displayManager.sddm.enable = false;

@@ -1,3 +1,4 @@
+# to use xinitrc (sddm needs to be disabled)
 { config, lib, pkgs, ... }:
 
 {
