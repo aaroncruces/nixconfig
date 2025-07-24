@@ -21,9 +21,9 @@ rm -rvf ~/.config
 
 cd ~/gits/dotfiles_stow
 git pull
+bash stow_uninstall_desktop.sh
 bash stow_uninstall_common.sh
 bash stow_install_common.sh
-bash stow_uninstall_desktop.sh
 bash stow_install_desktop.sh
 
 

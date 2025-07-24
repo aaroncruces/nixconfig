@@ -22,6 +22,7 @@
     kitty
     pcmanfm
     pkgs.nerd-fonts.jetbrains-mono
+    vscode
   ];
 
 
