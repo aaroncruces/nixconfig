@@ -2,7 +2,7 @@
 
 {
   boot = {
-    supportedFilesystems = [ "btrfs" ];
+    supportedFilesystems = [ "btrfs" "ntfs" ];
     initrd.kernelModules = [ "btrfs" ];
     loader = {
       efi.canTouchEfiVariables = true;
@@ -15,5 +15,6 @@
       };
     };
   };
+
   zramSwap.enable = true;
 }
