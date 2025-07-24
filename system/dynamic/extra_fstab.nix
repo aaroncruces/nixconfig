@@ -12,14 +12,14 @@
   environment.systemPackages = with pkgs; [
     ntfs3g
   ];
-  boot.loader.grub.extraEntries = ''
-    menuentry "Windows" {
-      insmod part_gpt
-      insmod fat
-      insmod ntfs
-      insmod chain
-      search --no-floppy --fs-uuid --set=root $BOOT_UUID
-      chainloader /EFI/Microsoft/Boot/bootmgfw.efi
-    }
-  '';
+  # boot.loader.grub.extraEntries = ''
+  #   menuentry "Windows" {
+  #     insmod part_gpt
+  #     insmod fat
+  #     insmod ntfs
+  #     insmod chain
+  #     search --no-floppy --fs-uuid --set=root $BOOT_UUID
+  #     chainloader /EFI/Microsoft/Boot/bootmgfw.efi
+  #   }
+  # '';
 }
