@@ -11,7 +11,6 @@
   };
 
   hardware = {
-    opengl.enable =  true;
     nvidia = {
       modesetting.enable = true; # Required for Wayland
       powerManagement.enable = false; # May cause issues with some setups, adjust as needed

@@ -19,13 +19,14 @@
   environment.systemPackages = with pkgs; [
     ntfs3g
   ];
-  # boot.loader.grub.extraEntries = ''
-  #   menuentry "Windows" {
-  #     insmod part_gpt
-  #     insmod fat
-  #     insmod chain
-  #     search --no-floppy --fs-uuid --set=root EAB0-361A
-  #     chainloader /EFI/Microsoft/Boot/bootmgfw.efi
-  #   }
-  # '';
+
+  boot.loader.grub.extraEntries = ''
+    menuentry "Windows" {
+      insmod part_gpt
+      insmod fat
+      insmod chain
+      search --no-floppy --fs-uuid --set=root EAB0-361A
+      chainloader /EFI/Microsoft/Boot/bootmgfw.efi
+    }
+  '';
 }

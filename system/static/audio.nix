@@ -15,6 +15,8 @@
     pulsemixer
   ];
 
+
   # Optional: Ensure audio hardware is enabled
-  hardware.pulseaudio.enable = false; # Disable PulseAudio server (using PipeWire-Pulse instead)
+  # hardware.pulseaudio.enable = false; # Disable PulseAudio server (using PipeWire-Pulse instead)
+  services.pulseaudio.enable = false; # Disable PulseAudio server (using PipeWire-Pulse instead)
 }
