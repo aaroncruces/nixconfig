@@ -32,6 +32,9 @@
     enable = true;
     enable32Bit = true;
   };
+
+
+  ########## NVIDIA ##########
   programs.hyprland.nvidiaPatches = true; # Enable NVIDIA-specific patches
 
 }
