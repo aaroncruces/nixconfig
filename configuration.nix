@@ -11,6 +11,8 @@
     ./system/static/services.nix
     ./system/static/bootloader.nix
 
+    ./system/static/nvidia.nix
+
     ./system/dynamic/partitions.nix
 
     ./user/users.nix

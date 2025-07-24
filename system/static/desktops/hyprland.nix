@@ -4,15 +4,17 @@
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
-    nvidiaPatches = lib.mkIf (builtins.pathExists /sys/module/nvidia) true;
   };
 
   environment.systemPackages = with pkgs; [
     wayland
     xwayland
+    waybar
+    hyprcursor
     libdrm
     mesa
     wayland-protocols
+    xdg-desktop-portal-hyprland
     wlroots
   ];
 }
