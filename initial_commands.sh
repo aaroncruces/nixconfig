@@ -33,4 +33,12 @@ cd /etc/nixos
 git pull
 nixos-rebuild switch
 
+# diskpart
+# select disk 0  # Assuming /dev/sda
+# list partition
+# select partition <efi_part_number>  # e.g., partition 4
+# format quick fs=fat32 label="EFI"
+# assign letter=S
+# exit
 
+# bcdboot C:\Windows /s S: /f UEFI
