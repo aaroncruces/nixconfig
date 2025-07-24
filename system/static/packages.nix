@@ -30,6 +30,8 @@
     libvirtd = {
       enable = true;
       qemu.vhostUserPackages = with pkgs; [ virtiofsd ];
+    };
   };
+  
   programs.gamemode.enable = true;
 }
