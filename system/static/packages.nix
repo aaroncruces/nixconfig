@@ -18,8 +18,20 @@
     automake
     stow
     oh-my-posh
-    antidote
     psmisc
     kitty
+    pcmanfm
   ];
+
+  environment.systemPackages = [
+    pkgs.nerd-fonts.jetbrains-mono
+  ];
+
+  virtualisation = {
+    docker.enable = true;
+    libvirtd = {
+      enable = true;
+      qemu.vhostUserPackages = with pkgs; [ virtiofsd ];
+  };
+  programs.gamemode.enable = true;
 }

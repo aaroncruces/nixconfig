@@ -10,6 +10,7 @@
     ./system/static/packages.nix
     ./system/static/services.nix
     ./system/static/bootloader.nix
+    ./system/static/audio.nix
 
     ./system/static/nvidia.nix
 

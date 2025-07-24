@@ -9,3 +9,5 @@ bash setup-nixos-configs.sh -d nvme0n1
 
 nixos-install
 
+find . -type f -name "*.nix" -exec bash -c 'echo "{}"; echo "----------------"; cat "{}"; echo -e "\n"' \; >> dump.txt
+
