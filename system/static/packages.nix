@@ -21,10 +21,11 @@
     psmisc
     kitty
     pcmanfm
+    pkgs.nerd-fonts.jetbrains-mono
   ];
 
   environment.systemPackages = [
-    pkgs.nerd-fonts.jetbrains-mono
+    
   ];
 
   virtualisation = {
