@@ -25,7 +25,17 @@
     vscode
     efibootmgr
     gparted
+    gvfs # Virtual filesystem support
+    samba # SMB/CIFS support for network shares
+    libmtp # MTP support for mobile devices
+    lxmenu-data # Desktop menu entries for LXDE applications
+    shared-mime-info # MIME type database for file associations
   ];
+
+  # Enable GVFS services
+  services.gvfs.enable = true;
+  services.udisks2.enable = true; # For auto-mounting removable devices
+  services.devmon.enable = true; # For auto-mounting removable devices
 
 
   virtualisation = {
