@@ -12,4 +12,13 @@
   environment.systemPackages = with pkgs; [
     ntfs3g
   ];
+  boot.loader.grub.extraEntries = ''
+    menuentry "Windows" {
+      insmod part_gpt
+      insmod fat
+      insmod chain
+      search --fs-uuid --set=root 7AB85F10B85ECA71
+      chainloader /EFI/Microsoft/Boot/bootmgfw.efi
+    }
+  '';
 }
