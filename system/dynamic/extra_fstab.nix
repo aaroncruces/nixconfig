@@ -16,8 +16,9 @@
     menuentry "Windows" {
       insmod part_gpt
       insmod fat
+      insmod ntfs
       insmod chain
-      search --fs-uuid --set=root 7AB85F10B85ECA71
+      search --no-floppy --fs-uuid --set=root $BOOT_UUID
       chainloader /EFI/Microsoft/Boot/bootmgfw.efi
     }
   '';
