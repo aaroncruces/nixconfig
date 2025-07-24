@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }:
 
 {
-  networking.hostName = "nixos";
+  networking.hostName = "whitetower"; # Set your hostname
   networking.networkmanager.enable = true;
 }

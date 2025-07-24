@@ -6,53 +6,6 @@ tmux
 git clone https://github.com/aaroncruces/nixconfig.git
 cd nixconfig
 bash setup-nixos-configs.sh -d nvme0n1
-ls -la  /mnt/etc/nixos/
 
 nixos-install
 
-
-
-{ config, pkgs, ... }:
-
-{
-  # Enable the X11 windowing system and Hyprland
-  services.xserver = {
-    enable = true;
-    displayManager.gdm.enable = true;
-    desktopManager.gnome.enable = false; # Optional: disable GNOME if not needed
-  };
-
-  # Enable Hyprland
-  programs.hyprland = {
-    enable = true;
-    nvidiaPatches = true; # Enable NVIDIA-specific patches
-  };
-
-  # NVIDIA drivers
-  services.xserver.videoDrivers = [ "nvidia" ];
-
-  # Basic system packages
-  environment.systemPackages = with pkgs; [
-    hyprland
-    xdg-desktop-portal-hyprland # For screen sharing and other portal features
-  ];
-
-  # Ensure OpenGL is enabled for NVIDIA
-  hardware.opengl = {
-    enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
-  };
-
-  # NVIDIA hardware configuration
-  hardware.nvidia = {
-    modesetting.enable = true; # Required for Wayland
-    powerManagement.enable = false; # May cause issues with some setups, adjust as needed
-    package = config.boot.kernelPackages.nvidiaPackages.stable; # Use stable NVIDIA drivers
-  };
-
-  # Basic system settings
-  boot.loader.systemd-boot.enable = true; # Or grub, depending on your setup
-  networking.hostName = "nixos"; # Set your hostname
-  time.timeZone = "America/New_York"; # Adjust to your timezone
-}
