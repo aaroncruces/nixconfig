@@ -31,6 +31,6 @@ sudo su
 
 cd /etc/nixos
 git pull
-nixos-install
+nixos-rebuild switch
 
 

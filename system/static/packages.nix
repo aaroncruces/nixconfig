@@ -24,9 +24,6 @@
     pkgs.nerd-fonts.jetbrains-mono
   ];
 
-  environment.systemPackages = [
-    
-  ];
 
   virtualisation = {
     docker.enable = true;
