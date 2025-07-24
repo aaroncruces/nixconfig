@@ -16,5 +16,7 @@
     wayland-protocols
     xdg-desktop-portal-hyprland
     wlroots
+    wofi
+    hyprpolkitagent
   ];
 }
