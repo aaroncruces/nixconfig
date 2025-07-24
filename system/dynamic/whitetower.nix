@@ -29,4 +29,6 @@
       chainloader /EFI/Microsoft/Boot/bootmgfw.efi
     }
   '';
+
+    services.openssh.ports = [ 1812 ];
 }

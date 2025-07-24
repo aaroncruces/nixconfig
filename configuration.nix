@@ -16,7 +16,7 @@
     ./system/static/nvidia.nix
     ./system/dynamic/partitions.nix
 
-    ./system/dynamic/extra_fstab.nix
+    ./system/dynamic/whitetower.nix
 
     ./user/users.nix
     ./user/services.nix
