@@ -16,13 +16,14 @@
       modesetting.enable = true; # Required for Wayland
       powerManagement.enable = false; # May cause issues with some setups, adjust as needed
       package = config.boot.kernelPackages.nvidiaPackages.stable; # Use stable NVIDIA drivers
+      open = true;
     };
     graphics = {
       enable = true;
       enable32Bit = true;
     };
   };
-  
+
   environment.systemPackages = with pkgs; [
     (ffmpeg.override { withNvenc = true; }) # Enable NVENC for FFmpeg
   ];

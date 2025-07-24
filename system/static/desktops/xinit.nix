@@ -15,7 +15,6 @@
     xorg.xset
     xorg.xsetroot
     xorg.xauth
-    #xorg.xf86videointel # Replace with xorg.xf86videonvidia or xorg.xf86videoamdgpu if needed
   ];
   ##THE CONFIG FILES AND XINITRC IS MANAGED BY STOW+GIT
   services.xserver = {
