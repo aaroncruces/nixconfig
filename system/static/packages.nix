@@ -23,6 +23,7 @@
     pcmanfm
     pkgs.nerd-fonts.jetbrains-mono
     vscode
+    efibootmgr
   ];
 
 
