@@ -5,12 +5,11 @@
   enable = true;
     settings = {
       PermitRootLogin = "no";
-      PubkeyAuthentication = "yes";
-      AuthorizedKeysFile = [ ".ssh/authorized_keys" ];
-      PasswordAuthentication = "no";
-      PermitEmptyPasswords = "no";
-      X11Forwarding = "yes";
-      X11UseLocalhost = "yes";
+      PubkeyAuthentication = true;
+      PasswordAuthentication = false;
+      PermitEmptyPasswords = false;
+      X11Forwarding = true;
+      X11UseLocalhost = true;
       MaxStartups = "10:30:100";
     };
   };

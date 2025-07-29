@@ -21,15 +21,26 @@
     psmisc
     kitty
     pcmanfm
-    pkgs.nerd-fonts.jetbrains-mono
     vscode
     efibootmgr
     gparted
-    gvfs # Virtual filesystem support
-    samba # SMB/CIFS support for network shares
-    libmtp # MTP support for mobile devices
-    lxmenu-data # Desktop menu entries for LXDE applications
-    shared-mime-info # MIME type database for file associations
+    gvfs
+    samba 
+    libmtp 
+    lxmenu-data
+    lxappearance
+    shared-mime-info
+    nwg-look # gui icon selector 
+    font-manager # gui font selector 
+    rose-pine-cursor
+    mpvpaper
+    xdg-user-dirs
+    peazip
+  ];
+
+  fonts.packages = with pkgs; [
+    nerd-fonts.jetbrains-mono
+    font-awesome
   ];
 
   # Enable GVFS services

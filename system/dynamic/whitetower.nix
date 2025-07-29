@@ -30,6 +30,30 @@
     }
   '';
 
-    services.openssh.ports = [ 1812 ];
-    
+  services.openssh.ports = [ 1812 ];
+
+  networking.networkmanager = {
+    enable = true;
+    ensureProfiles = {
+      profiles = {
+        "static-ip-ethernet" = {
+          connection = {
+            id = "Static IP Ethernet";
+            type = "ethernet";
+            interface-name = "enp4s0"; # Adjust if needed (e.g., wlan0 for Wi-Fi)
+            autoconnect = true;
+          };
+          ipv4 = {
+            method = "manual";
+            address = "192.168.1.10/24"; # Static IP and subnet mask
+            gateway = "192.168.1.1"; # Gateway IP
+            dns = "1.1.1.1;8.8.8.8"; # DNS servers (Cloudflare and Google)
+          };
+          ipv6 = {
+            method = "disabled"; # Disable IPv6
+          };
+        };
+      };
+    };
+  };
 }
