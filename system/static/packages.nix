@@ -36,6 +36,7 @@
     mpvpaper
     xdg-user-dirs
     peazip
+    steam
   ];
 
   fonts.packages = with pkgs; [
