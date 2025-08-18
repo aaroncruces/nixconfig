@@ -16,13 +16,13 @@
     ./system/static/nvidia.nix
     ./system/dynamic/partitions.nix
 
-    ./system/dynamic/whitetower.nix
+   ./system/dynamic/whitetower.nix
 
     ./user/users.nix
     ./user/services.nix
     ./user/homemanager.nix
-  ];
-
+    ] ++ lib.optional (config.networking.hostName == "whitetower") ./system/dynamic/whitetower.nix
+      ++ lib.optional (config.networking.hostName == "nixdev") ./system/dynamic/nixdev.nix;
   # System state version
   system.stateVersion = "25.05";
 }
