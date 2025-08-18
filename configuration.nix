@@ -4,7 +4,6 @@
   imports = [
     ./hardware-configuration.nix
 
-    ./system/static/networking.nix
     ./system/static/locale.nix
     ./system/static/desktop.nix
     ./system/static/packages.nix
@@ -15,14 +14,16 @@
     # check manually
     ./system/static/nvidia.nix
     ./system/dynamic/partitions.nix
+    ./system/dynamic/hostname.nix
 
-   ./system/dynamic/whitetower.nix
+    # depends on the hostname, so needs to be executed on a second pass once booted
+    ./system/dynamic/whitetower.nix
+    ./system/dynamic/nixdev.nix
 
     ./user/users.nix
     ./user/services.nix
     ./user/homemanager.nix
-    ] ++ lib.optional (config.networking.hostName == "whitetower") ./system/dynamic/whitetower.nix
-      ++ lib.optional (config.networking.hostName == "nixdev") ./system/dynamic/nixdev.nix;
+    ];
   # System state version
   system.stateVersion = "25.05";
 }

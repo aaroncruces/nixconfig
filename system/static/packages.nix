@@ -37,6 +37,7 @@
     xdg-user-dirs
     peazip
     steam
+    ntfs3g
   ];
 
   fonts.packages = with pkgs; [

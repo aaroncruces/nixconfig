@@ -1,3 +1,4 @@
 hardware-configuration.nix
 system/dynamic/partitions.nix
+system/dynamic/hostname.nix
 dump.txt
