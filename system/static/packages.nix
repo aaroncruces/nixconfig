@@ -38,9 +38,21 @@
     peazip
     steam
     ntfs3g
+    texliveFull
+    remmina
+    unzip
+    obsidian
+    featherpad
+    vlc
+    ffmpeg
+    yt-dlp
+    mpv
   ];
 
   fonts.packages = with pkgs; [
+    arkpandora_ttf
+    corefonts
+    vistafonts
     nerd-fonts.jetbrains-mono
     font-awesome
   ];
