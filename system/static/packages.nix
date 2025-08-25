@@ -37,6 +37,9 @@
     xdg-user-dirs
     peazip
     steam
+    vlc
+    dtrx
+    unrar
   ];
 
   fonts.packages = with pkgs; [
