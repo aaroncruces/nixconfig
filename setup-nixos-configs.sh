@@ -6,16 +6,22 @@ if [[ $EUID -ne 0 ]]; then
     exit 1
 fi
 
-# Parse block device parameter
-while getopts "d:" opt; do
+# Parse block device and hostname parameters
+while getopts "d:h:" opt; do
     case $opt in
         d) DEVICE="/dev/$OPTARG" ;;
-        *) echo "Usage: $0 -d <block-device> (e.g., -d sda or -d nvme0n1)" >&2; exit 1 ;;
+        h) HOSTNAME="$OPTARG" ;;
+        *) echo "Usage: $0 -d <block-device> -h <hostname> (e.g., -d sda -h myhost or -d nvme0n1 -h myhost)" >&2; exit 1 ;;
     esac
 done
 
 if [[ -z "$DEVICE" || "$DEVICE" == "/dev/" ]]; then
     echo "Error: Block device not specified. Use -d <device> (e.g., -d sda or -d nvme0n1)" >&2
+    exit 1
+fi
+
+if [[ -z "$HOSTNAME" ]]; then
+    echo "Error: Hostname not specified. Use -h <hostname>" >&2
     exit 1
 fi
 
@@ -163,13 +169,29 @@ cat << EOF > ./system/dynamic/partitions.nix
 }
 EOF
 
+# Step 10.1: Create system/dynamic/hostname.nix
+echo "Creating system/dynamic/hostname.nix..."
+cat << EOF > ./system/dynamic/hostname.nix
+{ config, lib, pkgs, ... }:
+
+{
+  networking.hostName = "$HOSTNAME";
+}
+EOF
+
 # Step 11: Copy entire local directory (including .git) to /mnt/etc/nixos/
 echo "Copying entire local directory (including .git) to /mnt/etc/nixos/..."
 mkdir -p /mnt/etc/nixos
 cp -r . /mnt/etc/nixos/ || { echo "Error: Failed to copy directory to /mnt/etc/nixos/" >&2; exit 1; }
 
-# Validate Nix syntax
+# Step 12: Add import for hostname.nix to configuration.nix if not present
+echo "Adding import for ./system/dynamic/hostname.nix to configuration.nix..."
 CONFIG_FILE="/mnt/etc/nixos/configuration.nix"
+if ! grep -q "./system/dynamic/hostname.nix" "$CONFIG_FILE"; then
+    sed -i '/\.\/system\/dynamic\/partitions.nix/a\    .\/system\/dynamic\/hostname.nix' "$CONFIG_FILE" || { echo "Error: Failed to add import to $CONFIG_FILE" >&2; exit 1; }
+fi
+
+# Validate Nix syntax
 if [[ -f "$CONFIG_FILE" ]]; then
     if nix-instantiate --parse "$CONFIG_FILE" >/dev/null 2>&1; then
         echo "Configuration syntax is valid."

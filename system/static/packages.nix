@@ -37,12 +37,28 @@
     xdg-user-dirs
     peazip
     steam
+<<<<<<< HEAD
     vlc
     dtrx
     unrar
+=======
+    ntfs3g
+    texliveFull
+    remmina
+    unzip
+    obsidian
+    featherpad
+    vlc
+    ffmpeg
+    yt-dlp
+    mpv
+>>>>>>> origin/nixdev
   ];
 
   fonts.packages = with pkgs; [
+    arkpandora_ttf
+    corefonts
+    vistafonts
     nerd-fonts.jetbrains-mono
     font-awesome
   ];
