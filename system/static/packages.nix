@@ -47,6 +47,8 @@
     ffmpeg
     yt-dlp
     mpv
+    openvpn
+    openfortivpn
   ];
 
   fonts.packages = with pkgs; [
