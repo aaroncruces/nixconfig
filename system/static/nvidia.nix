@@ -23,6 +23,8 @@
     };
   };
 
+
+
   environment.systemPackages = with pkgs; [
     (ffmpeg.override { withNvenc = true; }) # Enable NVENC for FFmpeg
   ];
