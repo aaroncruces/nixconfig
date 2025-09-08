@@ -58,7 +58,7 @@
   vlc
 
   # Media Utilities
-  ffmpeg
+  #ffmpeg
   yt-dlp
 
   # Partition and Boot Tools
@@ -84,6 +84,8 @@
 
   # Wallpaper
   mpvpaper
+
+  jstest-gtk
 ];
 
   fonts.packages = with pkgs; [
@@ -108,5 +110,7 @@
     };
   };
   
+  hardware.xpadneo.enable = true;
+
   programs.gamemode.enable = true;
 }
