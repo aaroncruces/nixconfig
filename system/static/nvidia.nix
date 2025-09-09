@@ -1,7 +1,19 @@
 { config, pkgs, ... }:
 
+let
+  nvidiaPatchSrc = builtins.fetchGit {
+    url = "https://github.com/icewind1991/nvidia-patch-nixos.git";
+    # Optional: rev = "commit-hash"; # e.g., "abc123..." for pinning
+  };
+in
+
 {
-  # Enable the X11 windowing system and Hyprland
+  nixpkgs.overlays = [
+    (import "${nvidiaPatchSrc}/overlay.nix")
+  ];
+
+  # Your existing NVIDIA config module, imported here or defined inline
+  # For example:
   services.xserver = {
     enable = true;
     videoDrivers = [ "nvidia" ];
@@ -14,7 +26,8 @@
     nvidia = {
       modesetting.enable = true; # Required for Wayland
       powerManagement.enable = false; # May cause issues with some setups, adjust as needed
-      package = config.boot.kernelPackages.nvidiaPackages.stable; # Use stable NVIDIA drivers
+      # Apply the patches: NVENC first, then FBC (order matters as per repo example)
+      package = pkgs.nvidia-patch.patch-nvenc (pkgs.nvidia-patch.patch-fbc config.boot.kernelPackages.nvidiaPackages.stable);
       open = true;
     };
     graphics = {
@@ -23,8 +36,20 @@
     };
   };
 
-  environment.systemPackages = with pkgs; [
-    (ffmpeg.override { withNvenc = true; }) # Enable NVENC for FFmpeg
-  ];
 
+
+environment.systemPackages = with pkgs; [
+  (ffmpeg-full.override {
+    withUnfree = true;
+    withNvenc = true;    # Keeps NVENC enabled
+    withNpp = true;
+    withCuda = true;
+    withNvdec = true;
+    withX265 = true;
+    withCuvid = true;
+  })
+  nvtopPackages.full
+  gpustat
+];
+# added unstable channel with sudo nix-channel --add https://nixos.org/channels/nixos-unstable nixos
 }

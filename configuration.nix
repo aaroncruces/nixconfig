@@ -11,6 +11,8 @@
     ./system/static/bootloader.nix
     ./system/static/audio.nix
 
+    ./system/static/bluetooth.nix
+
     # check manually
     ./system/static/nvidia.nix
     ./system/dynamic/partitions.nix
@@ -24,6 +26,6 @@
     ./user/services.nix
     ./user/homemanager.nix
     ];
-  # System state version
-  system.stateVersion = "25.05";
+    nix.settings.experimental-features = [ "nix-command" "flakes" ];
+    system.stateVersion = "25.05"; # Keep 25.05 for state compatibility
 }

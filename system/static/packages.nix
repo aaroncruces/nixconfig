@@ -5,53 +5,88 @@
   nixpkgs.config.allowUnfree = true;
   
   environment.systemPackages = with pkgs; [
-    firefox
-    htop
-    tmux
-    neovim
-    git
-    gcc
-    gnumake
-    cmake
-    binutils
-    autoconf
-    automake
-    stow
-    oh-my-posh
-    psmisc
-    kitty
-    pcmanfm
-    vscode
-    efibootmgr
-    gparted
-    gvfs
-    samba 
-    libmtp 
-    lxmenu-data
-    lxappearance
-    shared-mime-info
-    nwg-look # gui icon selector 
-    font-manager # gui font selector 
-    rose-pine-cursor
-    mpvpaper
-    xdg-user-dirs
-    peazip
-    steam
-    vlc
-    dtrx
-    unrar
-    ntfs3g
-    texliveFull
-    remmina
-    unzip
-    obsidian
-    featherpad
-    ffmpeg
-    yt-dlp
-    mpv
-    openvpn
-    openfortivpn
-  ];
+  # Browsers
+  firefox
+  chromium
+
+  # Desktop Customization
+  font-manager # gui font selector
+  lxappearance
+  lxmenu-data
+  nwg-look # gui icon selector
+  rose-pine-cursor
+  shared-mime-info
+  xdg-user-dirs
+
+  # Development Tools
+  autoconf
+  automake
+  binutils
+  cmake
+  gcc
+  git
+  gnumake
+  stow
+  parallel
+
+  # Document Tools
+  texliveFull
+
+  # Editors and IDEs
+  featherpad
+  neovim
+  obsidian
+  vscode
+  onlyoffice-desktopeditors
+
+  # File Managers and Archivers
+  pcmanfm
+  peazip
+  unzip
+
+  # File Systems and Mounting
+  gvfs
+  libmtp
+  ntfs3g
+  samba
+
+  # Gaming
+  steam
+
+  # Media Players
+  mpv
+  vlc
+
+  # Media Utilities
+  #ffmpeg
+  yt-dlp
+
+  # Partition and Boot Tools
+  efibootmgr
+  gparted
+
+  # Remote Access
+  remmina
+
+  # System Monitoring
+  htop
+  psmisc
+
+  # Terminal Tools
+  kitty
+  ghostty
+  oh-my-posh
+  tmux
+
+  # VPN
+  openfortivpn
+  openvpn
+
+  # Wallpaper
+  mpvpaper
+
+  jstest-gtk
+];
 
   fonts.packages = with pkgs; [
     arkpandora_ttf
@@ -75,5 +110,7 @@
     };
   };
   
+  hardware.xpadneo.enable = true;
+
   programs.gamemode.enable = true;
 }
