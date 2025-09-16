@@ -86,6 +86,11 @@
   mpvpaper
 
   jstest-gtk
+  dbeaver-bin
+  openssl
+  claude-code
+  nodejs_24
+  
 ];
 
   fonts.packages = with pkgs; [
@@ -103,14 +108,16 @@
 
 
   virtualisation = {
+    virtualbox.host.enable = true;
     docker.enable = true;
     libvirtd = {
       enable = true;
       qemu.vhostUserPackages = with pkgs; [ virtiofsd ];
     };
   };
-  
-  hardware.xpadneo.enable = true;
 
+  users.extraGroups.vboxusers.members = [ "user-with-access-to-virtualbox" ]
+
+  hardware.xpadneo.enable = true;
   programs.gamemode.enable = true;
 }
