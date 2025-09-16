@@ -5,93 +5,97 @@
   nixpkgs.config.allowUnfree = true;
   
   environment.systemPackages = with pkgs; [
-  # Browsers
-  firefox
-  chromium
+    # Browsers
+    firefox
+    chromium
 
-  # Desktop Customization
-  font-manager # gui font selector
-  lxappearance
-  lxmenu-data
-  nwg-look # gui icon selector
-  rose-pine-cursor
-  shared-mime-info
-  xdg-user-dirs
+    # Desktop Customization
+    font-manager # gui font selector
+    lxappearance
+    lxmenu-data
+    nwg-look # gui icon selector
+    rose-pine-cursor
+    shared-mime-info
+    xdg-user-dirs
 
-  # Development Tools
-  autoconf
-  automake
-  binutils
-  cmake
-  gcc
-  git
-  gnumake
-  stow
-  parallel
+    # Development Tools
+    autoconf
+    automake
+    binutils
+    cmake
+    gcc
+    git
+    gnumake
+    stow
+    parallel
 
-  # Document Tools
-  texliveFull
+    # Document Tools
+    texliveFull
 
-  # Editors and IDEs
-  featherpad
-  neovim
-  obsidian
-  vscode
-  onlyoffice-desktopeditors
+    # Editors and IDEs
+    featherpad
+    neovim
+    obsidian
+    vscode
+    onlyoffice-desktopeditors
 
-  # File Managers and Archivers
-  pcmanfm
-  peazip
-  unzip
+    # File Managers and Archivers
+    pcmanfm
+    peazip
+    unzip
 
-  # File Systems and Mounting
-  gvfs
-  libmtp
-  ntfs3g
-  samba
+    # File Systems and Mounting
+    gvfs
+    libmtp
+    ntfs3g
+    samba
 
-  # Gaming
-  steam
+    # Gaming
+    steam
 
-  # Media Players
-  mpv
-  vlc
+    # Media Players
+    mpv
+    vlc
 
-  # Media Utilities
-  #ffmpeg
-  yt-dlp
+    # Media Utilities
+    #ffmpeg
+    yt-dlp
 
-  # Partition and Boot Tools
-  efibootmgr
-  gparted
+    # Partition and Boot Tools
+    efibootmgr
+    gparted
 
-  # Remote Access
-  remmina
+    # Remote Access
+    remmina
 
-  # System Monitoring
-  htop
-  psmisc
+    # System Monitoring
+    htop
+    psmisc
 
-  # Terminal Tools
-  kitty
-  ghostty
-  oh-my-posh
-  tmux
+    # Terminal Tools
+    kitty
+    ghostty
+    oh-my-posh
+    tmux
 
-  # VPN
-  openfortivpn
-  openvpn
+    # VPN
+    openfortivpn
+    openvpn
 
-  # Wallpaper
-  mpvpaper
+    # Wallpaper
+    mpvpaper
 
-  jstest-gtk
-  dbeaver-bin
-  openssl
-  claude-code
-  nodejs_24
-  
-];
+    jstest-gtk
+    dbeaver-bin
+    openssl
+    claude-code
+    nodejs_24
+    
+
+    postman
+
+    keepassxc
+  ];
 
   fonts.packages = with pkgs; [
     arkpandora_ttf
