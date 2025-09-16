@@ -86,6 +86,12 @@
   mpvpaper
 
   jstest-gtk
+
+  postman
+
+  keepassxc
+
+  dbeaver-bin
 ];
 
   fonts.packages = with pkgs; [
