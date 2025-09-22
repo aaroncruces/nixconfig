@@ -12,6 +12,7 @@
       "networkmanager" # For managing network connections
       "docker" # Optional: for Docker, if used
       "libvirtd" # Optional: for virtual machines, if used
+      "vboxusers" # For VirtualBox access
       "plugdev"
       "gamemode"
      ]; # sudo and NetworkManager access
