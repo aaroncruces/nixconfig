@@ -62,30 +62,100 @@
      '';
     
       services.openssh.ports = [ 1812 ];
+# ------------------------------------------------------
+      # # Disable global DHCP to manage interfaces manually
+      # networking.useDHCP = false;
 
-      networking.networkmanager = {
-        enable = true;
-        ensureProfiles = {
-          profiles = {
-            "static-ip-ethernet" = {
-              connection = {
-                id = "Static IP Ethernet";
-                type = "ethernet";
-                interface-name = "enp4s0"; # Adjust if needed (e.g., wlan0 for Wi-Fi)
-                autoconnect = true;
-              };
-              ipv4 = {
-                method = "manual";
-                address = "192.168.1.12/24"; # Static IP and subnet mask
-                gateway = "192.168.1.1"; # Gateway IP
-                dns = "1.1.1.1;8.8.8.8"; # DNS servers (Cloudflare and Google)
-              };
-              ipv6 = {
-                method = "disabled"; # Disable IPv6
-              };
-            };
-          };
-        };
+      # # Configure the physical interface without DHCP or IP
+      # networking.interfaces.enp4s0.useDHCP = false;
+
+      # # Define the bridge interface br0 and attach enp4s0 to it
+      # networking.bridges = {
+      #   br0 = {
+      #     interfaces = [ "enp4s0" ];
+      #   };
+      # };
+
+      # # Configure br0 with a static IP address
+      # networking.interfaces.br0.ipv4.addresses = [{
+      #   address = "192.168.1.12";
+      #   prefixLength = 24; # Equivalent to subnet mask 255.255.255.0
+      # }];
+
+      # # Set default gateway (adjust as needed for your network)
+      # networking.defaultGateway = {
+      #   address = "192.168.1.1";
+      #   interface = "br0";
+      # };
+
+      # # Set DNS servers (adjust as needed)
+      # networking.nameservers = [ "1.1.1.1" "8.8.8.8" ];
+
+# ------------------------------------------------------
+      # networking.networkmanager = {
+      #   enable = true;
+      #   ensureProfiles = {
+      #     profiles = {
+      #       "static-ip-ethernet" = {
+      #         connection = {
+      #           id = "Static IP Ethernet";
+      #           type = "ethernet";
+      #           interface-name = "enp4s0"; # Adjust if needed (e.g., wlan0 for Wi-Fi)
+      #           autoconnect = true;
+      #         };
+      #         ipv4 = {
+      #           method = "manual";
+      #           address = "192.168.1.12/24"; # Static IP and subnet mask
+      #           gateway = "192.168.1.1"; # Gateway IP
+      #           dns = "1.1.1.1;8.8.8.8"; # DNS servers (Cloudflare and Google)
+      #         };
+      #         ipv6 = {
+      #           method = "disabled"; # Disable IPv6
+      #         };
+      #       };
+      #     };
+      #   };
+      # };
+# ------------------------------------------------------
+  # Enable NetworkManager
+  networking.networkmanager.enable = true;
+
+  # Disable the default networking configuration to avoid conflicts
+  networking.useDHCP = false;
+  networking.interfaces.enp4s0.useDHCP = false;
+
+  # Ensure NetworkManager manages all interfaces
+  networking.networkmanager.unmanaged = [ ];
+
+  # Configure NetworkManager connection profiles for the bridge
+  networking.networkmanager.ensureProfiles.profiles = {
+    bridge-br0 = {
+      connection = {
+        id = "bridge-br0";
+        type = "bridge";
+        interface-name = "br0";
+        autoconnect = true;
       };
+      ipv4 = {
+        method = "manual";
+        address1 = "192.168.1.12/24,192.168.1.1"; # IP/subnet,gateway
+        dns = "8.8.8.8;8.8.4.4;"; # DNS servers
+      };
+      bridge = {
+        stp = false; # Disable Spanning Tree Protocol (optional, enable if needed)
+        ageing-time = 300;
+      };
+    };
+    bridge-slave-enp4s0 = {
+      connection = {
+        id = "bridge-slave-enp4s0";
+        type = "ethernet";
+        interface-name = "enp4s0";
+        master = "br0";
+        slave-type = "bridge";
+        autoconnect = true;
+      };
+    };
+  };
     };
 }
