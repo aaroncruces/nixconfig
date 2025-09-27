@@ -42,7 +42,7 @@
     # # Enable DHCP on the bridge interface
     # networking.interfaces.br0.useDHCP = true;
 
-  # Enable NetworkManager
+# Enable NetworkManager
   networking.networkmanager.enable = true;
 
   # Disable the default networking configuration to avoid conflicts
@@ -51,6 +51,9 @@
 
   # Ensure NetworkManager manages all interfaces
   networking.networkmanager.unmanaged = [ ];
+
+  # Disable NetworkManager-wait-online to prevent boot failures due to timeouts
+  systemd.services."NetworkManager-wait-online".enable = false;
 
   # Configure NetworkManager connection profiles for the bridge
   networking.networkmanager.ensureProfiles.profiles = {

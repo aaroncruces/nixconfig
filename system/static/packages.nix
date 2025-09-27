@@ -86,6 +86,8 @@
     openvpn # open source vpn solution
     # Wallpaper
     mpvpaper # video wallpaper program using mpv
+
+    nixfmt
   ];
   fonts.packages = with pkgs; [
     arkpandora_ttf # free truetype font collection
