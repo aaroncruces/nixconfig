@@ -26,22 +26,60 @@
      services.openssh.ports = [ 1814 ];
 
      
-     # Disable global DHCP to manage interfaces manually
-    networking.useDHCP = false;
+    #  # Disable global DHCP to manage interfaces manually
+    # networking.useDHCP = false;
 
-    # Configure the physical interface without DHCP
-    networking.interfaces.enp8s0.useDHCP = false;
+    # # Configure the physical interface without DHCP
+    # networking.interfaces.enp8s0.useDHCP = false;
 
-    # Define the bridge interface br0 and attach enp8s0 to it
-    networking.bridges = {
-      br0 = {
-        interfaces = [ "enp8s0" ];
+    # # Define the bridge interface br0 and attach enp8s0 to it
+    # networking.bridges = {
+    #   br0 = {
+    #     interfaces = [ "enp8s0" ];
+    #   };
+    # };
+
+    # # Enable DHCP on the bridge interface
+    # networking.interfaces.br0.useDHCP = true;
+
+  # Enable NetworkManager
+  networking.networkmanager.enable = true;
+
+  # Disable the default networking configuration to avoid conflicts
+  networking.useDHCP = false;
+  networking.interfaces.enp8s0.useDHCP = false;
+
+  # Ensure NetworkManager manages all interfaces
+  networking.networkmanager.unmanaged = [ ];
+
+  # Configure NetworkManager connection profiles for the bridge
+  networking.networkmanager.ensureProfiles.profiles = {
+    bridge-br0 = {
+      connection = {
+        id = "bridge-br0";
+        type = "bridge";
+        interface-name = "br0";
+        autoconnect = true;
+      };
+      ipv4 = {
+        method = "auto"; # Enable DHCP for the bridge
+      };
+      bridge = {
+        stp = false; # Disable Spanning Tree Protocol (optional, enable if needed)
+        ageing-time = 300;
       };
     };
-
-    # Enable DHCP on the bridge interface
-    networking.interfaces.br0.useDHCP = true;
-
+    bridge-slave-enp8s0 = {
+      connection = {
+        id = "bridge-slave-enp8s0";
+        type = "ethernet";
+        interface-name = "enp8s0";
+        master = "br0";
+        slave-type = "bridge";
+        autoconnect = true;
+      };
+    };
+  };
 
     };
 }
