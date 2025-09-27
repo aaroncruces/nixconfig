@@ -99,7 +99,6 @@
   services.udisks2.enable = true; # For auto-mounting removable devices
   services.devmon.enable = true; # For auto-mounting removable devices
   virtualisation = {
-    virtualbox.host.enable = true;
     docker = {
       enable = true;
       storageDriver = "btrfs";
@@ -115,7 +114,6 @@
       enableKvm = true;
       addNetworkInterface = false; # modprobe disable kvm if needed to use not/nat network
     };
-    docker.enable = true;
     libvirtd = {
       enable = true;
       qemu = {
