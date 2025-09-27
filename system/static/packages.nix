@@ -1,8 +1,7 @@
-{ config, lib, pkgs, ... }:
-{
+{ config, lib, pkgs, ... }: {
   # Allow non-free packages
   nixpkgs.config.allowUnfree = true;
- 
+
   environment.systemPackages = with pkgs; [
     # Browsers
     chromium # google chrome browser
@@ -106,24 +105,26 @@
       storageDriver = "btrfs";
       daemon.settings = {
         features = {
-          cdi = true;  # Enables Container Device Interface for GPU passthrough
+          cdi = true; # Enables Container Device Interface for GPU passthrough
         };
       };
     };
     virtualbox.host = {
       enable = true;
-      enableExtensionPack = true; # enables oracle extension pack for usb support
+      enableExtensionPack =
+        true; # enables oracle extension pack for usb support
       enableKvm = true;
-      addNetworkInterface = false; # modprobe disable kvm if needed to use not/nat network
+      addNetworkInterface =
+        false; # modprobe disable kvm if needed to use not/nat network
     };
     libvirtd = {
       enable = true;
       qemu = {
-      vhostUserPackages = with pkgs; [ virtiofsd ];
-      swtpm.enable = true;
-      ovmf.enable = true;
-      ovmf.packages = [ pkgs.OVMFFull.fd ];
-    };
+        vhostUserPackages = with pkgs; [ virtiofsd ];
+        swtpm.enable = true;
+        ovmf.enable = true;
+        ovmf.packages = [ pkgs.OVMFFull.fd ];
+      };
     };
     spiceUSBRedirection.enable = true; # enable usb redirection in virt-manager
   };
@@ -144,15 +145,11 @@
     fi
   '';
 
-environment.etc."qemu/bridge.conf" = {
-  text = ''
-    allow br0
-    allow virbr0
-  '';
-};
-
-
-
-
+  environment.etc."qemu/bridge.conf" = {
+    text = ''
+      allow br0
+      allow virbr0
+    '';
+  };
 
 }

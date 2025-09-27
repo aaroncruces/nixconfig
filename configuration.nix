@@ -25,7 +25,7 @@
     ./user/users.nix
     ./user/services.nix
     ./user/homemanager.nix
-    ];
-    nix.settings.experimental-features = [ "nix-command" "flakes" ];
-    system.stateVersion = "25.05"; # Keep 25.05 for state compatibility
+  ];
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  system.stateVersion = "25.05"; # Keep 25.05 for state compatibility
 }

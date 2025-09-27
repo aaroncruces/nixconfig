@@ -11,12 +11,10 @@
   };
 
   # Install PulseMixer for audio control
-  environment.systemPackages = with pkgs; [
-    pulsemixer
-  ];
-
+  environment.systemPackages = with pkgs; [ pulsemixer ];
 
   # Optional: Ensure audio hardware is enabled
   # hardware.pulseaudio.enable = false; # Disable PulseAudio server (using PipeWire-Pulse instead)
-  services.pulseaudio.enable = false; # Disable PulseAudio server (using PipeWire-Pulse instead)
+  services.pulseaudio.enable =
+    false; # Disable PulseAudio server (using PipeWire-Pulse instead)
 }

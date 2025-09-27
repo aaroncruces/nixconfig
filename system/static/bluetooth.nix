@@ -6,7 +6,7 @@
   hardware.bluetooth.powerOnBoot = true;
   hardware.bluetooth.settings = {
     General = {
-      ControllerMode = "dual";  # Supports BR/EDR and LE for Xbox controllers
+      ControllerMode = "dual"; # Supports BR/EDR and LE for Xbox controllers
       Experimental = true;
       FastConnectable = true;
     };
@@ -22,8 +22,8 @@
 
   # Add tools for debugging
   environment.systemPackages = with pkgs; [
-    bluez  # For bluetoothctl
-    evtest  # For raw input events
+    bluez # For bluetoothctl
+    evtest # For raw input events
     jstest-gtk
   ];
 

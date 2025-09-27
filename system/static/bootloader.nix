@@ -7,7 +7,7 @@
     loader = {
       efi.canTouchEfiVariables = true;
       systemd-boot.enable = false;
-      grub= {
+      grub = {
         enable = true;
         efiSupport = true;
         device = "nodev";
