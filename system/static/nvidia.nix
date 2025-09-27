@@ -33,6 +33,11 @@ in
     graphics = {
       enable = true;
       enable32Bit = true;
+      extraPackages = with pkgs; [
+        virglrenderer  # For VirGL 3D acceleration in VMs
+        nvidia-vaapi-driver  # NVIDIA VAAPI for hardware decoding (optional but useful)
+        vaapiVdpau  # VDPAU backend for VAAPI (helps with video accel)
+      ];
     };
   };
 
@@ -50,6 +55,9 @@ environment.systemPackages = with pkgs; [
   })
   nvtopPackages.full
   gpustat
+  mesa-demos
+  virtualgl
+  virtualglLib
 ];
 # added unstable channel with sudo nix-channel --add https://nixos.org/channels/nixos-unstable nixos
 }

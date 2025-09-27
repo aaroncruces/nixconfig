@@ -23,5 +23,25 @@
           ];
         };
 
+     services.openssh.ports = [ 1814 ];
+
+     
+     # Disable global DHCP to manage interfaces manually
+    networking.useDHCP = false;
+
+    # Configure the physical interface without DHCP
+    networking.interfaces.enp8s0.useDHCP = false;
+
+    # Define the bridge interface br0 and attach enp8s0 to it
+    networking.bridges = {
+      br0 = {
+        interfaces = [ "enp8s0" ];
+      };
+    };
+
+    # Enable DHCP on the bridge interface
+    networking.interfaces.br0.useDHCP = true;
+
+
     };
 }
