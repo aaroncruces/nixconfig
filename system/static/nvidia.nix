@@ -3,7 +3,7 @@
 let
   nvidiaPatchSrc = builtins.fetchGit {
     url = "https://github.com/icewind1991/nvidia-patch-nixos.git";
-    # Optional: rev = "commit-hash"; # e.g., "abc123..." for pinning
+    # Optional: rev = "your-commit-hash";  # Pin for reproducibility
   };
 in
 
@@ -12,44 +12,63 @@ in
     (import "${nvidiaPatchSrc}/overlay.nix")
   ];
 
-  # Your existing NVIDIA config module, imported here or defined inline
-  # For example:
+  nixpkgs.config.allowUnfree = true;
+
+  # NVIDIA driver setup
   services.xserver = {
     enable = true;
     videoDrivers = [ "nvidia" ];
     exportConfiguration = true;
     displayManager.gdm.enable = true;
-    desktopManager.gnome.enable = false; # Optional: disable GNOME if not needed
+    desktopManager.gnome.enable = false;  # Adjust if using GNOME
   };
 
   hardware = {
-    nvidia = {
-      modesetting.enable = true; # Required for Wayland
-      powerManagement.enable = false; # May cause issues with some setups, adjust as needed
-      # Apply the patches: NVENC first, then FBC (order matters as per repo example)
-      package = pkgs.nvidia-patch.patch-nvenc (pkgs.nvidia-patch.patch-fbc config.boot.kernelPackages.nvidiaPackages.stable);
-      open = true;
-    };
+    # OpenGL support (for 24.05+; use graphics.enable in unstable)
+
     graphics = {
       enable = true;
       enable32Bit = true;
     };
+    nvidia = {
+      modesetting.enable = true;
+      powerManagement.enable = false;
+      powerManagement.finegrained = false;
+      nvidiaSettings = true;
+      open = true;  # Set false for proprietary if open modules fail
+      package = pkgs.nvidia-patch.patch-nvenc (pkgs.nvidia-patch.patch-fbc config.boot.kernelPackages.nvidiaPackages.stable);
+    };
+
+    # NVIDIA Container Toolkit (CDI mode; no mounts needed)
+    nvidia-container-toolkit = {
+      enable = true;
+      package = pkgs.nvidia-container-toolkit;
+      # Removed mounts: Defaults handle nvidia-smi and devices
+    };
   };
 
+  # Docker integration
+  virtualisation.docker = {
+    enable = true;
+    extraOptions = "--add-runtime nvidia=/run/current-system/sw/bin/nvidia-container-runtime";
+  };
 
+  # System packages
+  environment.systemPackages = with pkgs; [
+    (ffmpeg-full.override {
+      withUnfree = true;
+      withNvenc = true;
+      withNpp = true;
+      withCuda = true;
+      withNvdec = true;
+      withX265 = true;
+      withCuvid = true;
+    })
+    nvtopPackages.full
+    gpustat
+    nvidia-container-toolkit  # For manual CDI tools
+  ];
 
-environment.systemPackages = with pkgs; [
-  (ffmpeg-full.override {
-    withUnfree = true;
-    withNvenc = true;    # Keeps NVENC enabled
-    withNpp = true;
-    withCuda = true;
-    withNvdec = true;
-    withX265 = true;
-    withCuvid = true;
-  })
-  nvtopPackages.full
-  gpustat
-];
-# added unstable channel with sudo nix-channel --add https://nixos.org/channels/nixos-unstable nixos
+  # User groups
+  users.users.aaron.extraGroups = [ "video" "docker" ];
 }

@@ -91,10 +91,10 @@
     claude-code
     nodejs_24
     
-
     postman
-
+    
     keepassxc
+
   ];
 
   fonts.packages = with pkgs; [
@@ -113,14 +113,23 @@
 
   virtualisation = {
     virtualbox.host.enable = true;
-    docker.enable = true;
+    docker = {
+      enable = true;
+      storageDriver = "btrfs";
+      daemon.settings = {
+        features = {
+          cdi = true;  # Enables Container Device Interface for GPU passthrough
+        };
+      };
+    };
     libvirtd = {
       enable = true;
       qemu.vhostUserPackages = with pkgs; [ virtiofsd ];
     };
+    oci-containers.backend = "docker";
   };
 
-  users.extraGroups.vboxusers.members = [ "user-with-access-to-virtualbox" ]
+  users.extraGroups.vboxusers.members = [ "user-with-access-to-virtualbox" ];
 
   hardware.xpadneo.enable = true;
   programs.gamemode.enable = true;
