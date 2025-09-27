@@ -2,7 +2,7 @@
 
 # Default values
 DEFAULT_REMOTE="origin"
-DEFAULT_BRANCHES="nixdev whitedrive"
+DEFAULT_BRANCHES="nixdev whitetower"
 
 # Parse command line arguments
 REMOTE="$DEFAULT_REMOTE"
