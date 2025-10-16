@@ -86,9 +86,17 @@
     openvpn # open source vpn solution
     # Wallpaper
     mpvpaper # video wallpaper program using mpv
-
+    rclone
+    iperf
     nixfmt
+    inetutils
+    expect
+    ventoy
+
   ];
+  nixpkgs.config.permittedInsecurePackages = [
+                "ventoy-1.1.05"
+              ];
   fonts.packages = with pkgs; [
     arkpandora_ttf # free truetype font collection
     corefonts # microsoft core fonts (arial, times new roman, etc.)
