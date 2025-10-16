@@ -3,7 +3,7 @@
 {
   users.users.aaron = {
     isNormalUser = true;
-    extraGroups = [ 
+    extraGroups = [
       "wheel"
       "networkmanager"
       "input" # For Waybar to access input devices
@@ -16,7 +16,8 @@
       "vboxusers" # For VirtualBox access
       "plugdev"
       "gamemode"
-     ]; # sudo and NetworkManager access
+      "adbusers"
+    ]; # sudo and NetworkManager access
     initialPassword = "changeme"; # Change after install
     shell = pkgs.zsh;
   };
@@ -25,8 +26,6 @@
   programs.zsh.enable = true;
 
   # Ensure zsh is installed
-  environment.systemPackages = with pkgs; [
-    zsh
-  ];
+  environment.systemPackages = with pkgs; [ zsh ];
   nix.settings.allowed-users = [ "@wheel" ];
 }

@@ -5,12 +5,9 @@ let
     url = "https://github.com/icewind1991/nvidia-patch-nixos.git";
     # Optional: rev = "your-commit-hash";  # Pin for reproducibility
   };
-in
 
-{
-  nixpkgs.overlays = [
-    (import "${nvidiaPatchSrc}/overlay.nix")
-  ];
+in {
+  nixpkgs.overlays = [ (import "${nvidiaPatchSrc}/overlay.nix") ];
 
   nixpkgs.config.allowUnfree = true;
 
@@ -20,7 +17,9 @@ in
     videoDrivers = [ "nvidia" ];
     exportConfiguration = true;
     displayManager.gdm.enable = true;
-    desktopManager.gnome.enable = false;  # Adjust if using GNOME
+    desktopManager.gnome.enable = false; # Adjust if using GNOME
+    displayManager.autoLogin.enable = true;
+    displayManager.autoLogin.user = "aaron";
   };
 
   hardware = {
@@ -35,8 +34,9 @@ in
       powerManagement.enable = false;
       powerManagement.finegrained = false;
       nvidiaSettings = true;
-      open = true;  # Set false for proprietary if open modules fail
-      package = pkgs.nvidia-patch.patch-nvenc (pkgs.nvidia-patch.patch-fbc config.boot.kernelPackages.nvidiaPackages.stable);
+      open = true; # Set false for proprietary if open modules fail
+      package = pkgs.nvidia-patch.patch-nvenc (pkgs.nvidia-patch.patch-fbc
+        config.boot.kernelPackages.nvidiaPackages.stable);
     };
 
     # NVIDIA Container Toolkit (CDI mode; no mounts needed)
@@ -50,7 +50,8 @@ in
   # Docker integration
   virtualisation.docker = {
     enable = true;
-    extraOptions = "--add-runtime nvidia=/run/current-system/sw/bin/nvidia-container-runtime";
+    extraOptions =
+      "--add-runtime nvidia=/run/current-system/sw/bin/nvidia-container-runtime";
   };
 
   # System packages
@@ -66,7 +67,7 @@ in
     })
     nvtopPackages.full
     gpustat
-    nvidia-container-toolkit  # For manual CDI tools
+    nvidia-container-toolkit # For manual CDI tools
   ];
 
   # User groups
