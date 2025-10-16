@@ -87,7 +87,13 @@
     mpvpaper # video wallpaper program using mpv
 
     nixfmt
+    gthumb
+
+    
   ];
+  
+programs.adb.enable = true;
+
   fonts.packages = with pkgs; [
     arkpandora_ttf # free truetype font collection
     corefonts # microsoft core fonts (arial, times new roman, etc.)
