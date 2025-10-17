@@ -11,6 +11,7 @@
       FastConnectable = true;
     };
   };
+  hardware.firmware = [ pkgs.linux-firmware ];
 
   # Load kernel modules for Xbox controllers
   boot.kernelModules = [ "xpad" "joydev" "uinput" ];
@@ -25,6 +26,7 @@
     bluez # For bluetoothctl
     evtest # For raw input events
     jstest-gtk
+    blueman
   ];
 
   # Grant user access to input devices

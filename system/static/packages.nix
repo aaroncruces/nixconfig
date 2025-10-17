@@ -92,7 +92,7 @@
     expect
     ventoy
     gthumb
-
+    usbutils
   ];
 
 
