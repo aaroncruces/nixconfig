@@ -1,13 +1,14 @@
 { config, pkgs, ... }:
 
-let
-  nvidiaPatchSrc = builtins.fetchGit {
-    url = "https://github.com/icewind1991/nvidia-patch-nixos.git";
-    # Optional: rev = "your-commit-hash";  # Pin for reproducibility
-  };
+# let
+#   nvidiaPatchSrc = builtins.fetchGit {
+#     url = "https://github.com/icewind1991/nvidia-patch-nixos.git";
+#     # Optional: rev = "your-commit-hash";  # Pin for reproducibility
+#   };
 
-in {
-  nixpkgs.overlays = [ (import "${nvidiaPatchSrc}/overlay.nix") ];
+# in 
+{
+  # nixpkgs.overlays = [ (import "${nvidiaPatchSrc}/overlay.nix") ];
 
   nixpkgs.config.allowUnfree = true;
 
@@ -33,8 +34,8 @@ in {
       powerManagement.finegrained = false;
       nvidiaSettings = true;
       open = true; # Set false for proprietary if open modules fail
-      package = pkgs.nvidia-patch.patch-nvenc (pkgs.nvidia-patch.patch-fbc
-        config.boot.kernelPackages.nvidiaPackages.stable);
+      # package = pkgs.nvidia-patch.patch-nvenc (pkgs.nvidia-patch.patch-fbc
+      #   config.boot.kernelPackages.nvidiaPackages.stable);
     };
 
     # NVIDIA Container Toolkit (CDI mode; no mounts needed)
