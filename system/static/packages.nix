@@ -94,8 +94,6 @@
     gthumb
 
   ];
-
-
   
 programs.adb.enable = true;
   nixpkgs.config.permittedInsecurePackages = [

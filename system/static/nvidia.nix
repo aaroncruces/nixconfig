@@ -18,8 +18,6 @@ in {
     exportConfiguration = true;
     displayManager.gdm.enable = true;
     desktopManager.gnome.enable = false; # Adjust if using GNOME
-    displayManager.autoLogin.enable = true;
-    displayManager.autoLogin.user = "aaron";
   };
 
   hardware = {
