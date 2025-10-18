@@ -18,7 +18,7 @@ in {
     exportConfiguration = true;
     displayManager.gdm.enable = true;
     desktopManager.gnome.enable = false; # Adjust if using GNOME
-    displayManager.autoLogin.enable = true;
+#    displayManager.autoLogin.enable = true;
     displayManager.autoLogin.user = "aaron";
   };
 
@@ -35,8 +35,8 @@ in {
       powerManagement.finegrained = false;
       nvidiaSettings = true;
       open = true; # Set false for proprietary if open modules fail
-      package = pkgs.nvidia-patch.patch-nvenc (pkgs.nvidia-patch.patch-fbc
-        config.boot.kernelPackages.nvidiaPackages.stable);
+#      package = pkgs.nvidia-patch.patch-nvenc (pkgs.nvidia-patch.patch-fbc
+#        config.boot.kernelPackages.nvidiaPackages.stable);
     };
 
     # NVIDIA Container Toolkit (CDI mode; no mounts needed)

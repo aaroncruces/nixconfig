@@ -145,7 +145,6 @@ programs.adb.enable = true;
   programs.virt-manager.enable = true;
   users.extraGroups.vboxusers.members = [ "user-with-access-to-virtualbox" ];
   users.extraGroups.libvirtd.members = [ "user-with-access-to-virtualbox" ];
-  hardware.xpadneo.enable = true;
   programs.gamemode.enable = true;
 
   # Automatically create virtio-win.iso on activation

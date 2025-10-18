@@ -9,17 +9,26 @@
       ControllerMode = "dual"; # Supports BR/EDR and LE for Xbox controllers
       Experimental = true;
       FastConnectable = true;
+      Privacy = "device";  # Helps with stable pairing
+      JustWorksRepairing = "always";
+      Class = "0x000100";
+      #ControllerMode = "bredr";  # Ensures BR/EDR mode for controllers
     };
   };
   hardware.firmware = [ pkgs.linux-firmware ];
 
+#  hardware.xpadneo.enable = true;
+#  hardware.uinput.enable = true;  # For Steam input and uaccess
   # Load kernel modules for Xbox controllers
   boot.kernelModules = [ "xpad" "joydev" "uinput" ];
 
   # Bluetooth tweak for Xbox controller stability
-  boot.extraModprobeConfig = ''
-    options bluetooth disable_ertm=Y
-  '';
+  boot = {
+#    extraModulePackages = with config.boot.kernelPackages; [ xpadneo ];
+    extraModprobeConfig = ''
+      options bluetooth disable_ertm=Y  # Improves Bluetooth reliability for controllers
+    '';
+  };
 
   # Add tools for debugging
   environment.systemPackages = with pkgs; [
