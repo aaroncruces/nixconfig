@@ -92,7 +92,9 @@
     inetutils
     expect
     ventoy
-
+    ansible
+    sshpass
+    acpi
   ];
   nixpkgs.config.permittedInsecurePackages = [
                 "ventoy-1.1.05"
