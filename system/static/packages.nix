@@ -97,9 +97,11 @@
     ansible
     sshpass
     acpi
+    hdparm
+    smartmontools
+    
+
   ];
-
-
   
 programs.adb.enable = true;
   nixpkgs.config.permittedInsecurePackages = [
@@ -149,6 +151,10 @@ programs.adb.enable = true;
   programs.virt-manager.enable = true;
   users.extraGroups.vboxusers.members = [ "user-with-access-to-virtualbox" ];
   users.extraGroups.libvirtd.members = [ "user-with-access-to-virtualbox" ];
+<<<<<<< HEAD
+=======
+  
+>>>>>>> whitetower
   programs.gamemode.enable = true;
 
   # Automatically create virtio-win.iso on activation
