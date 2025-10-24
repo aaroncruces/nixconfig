@@ -93,6 +93,10 @@
     ventoy
     gthumb
     usbutils
+
+    ansible
+    sshpass
+    acpi
   ];
 
 
