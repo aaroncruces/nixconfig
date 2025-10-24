@@ -16,6 +16,7 @@
       "vboxusers" # For VirtualBox access
       "plugdev"
       "gamemode"
+      "uinput"
     ]; # sudo and NetworkManager access
     initialPassword = "changeme"; # Change after install
     shell = pkgs.zsh;
