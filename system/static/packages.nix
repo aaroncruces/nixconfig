@@ -93,6 +93,9 @@
     ventoy
     gthumb
 
+    ansible
+    sshpass
+    acpi
   ];
 
 
