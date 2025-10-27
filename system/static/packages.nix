@@ -100,6 +100,7 @@
     hdparm
     smartmontools
     
+    terraform
 
   ];
   

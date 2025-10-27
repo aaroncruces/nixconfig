@@ -37,27 +37,27 @@
     #   "d /redtower 0755 root root - -"
     # ];
 
-    # SSHFS mount
-    fileSystems."/redtower" = {
-      device =
-        "aaron@192.168.1.10:/"; # Remote root; adjust to /raidpool if needed
-      fsType = "sshfs";
-      options = [
-        "defaults"
-        "_netdev" # Wait for network
-        "allow_other" # Non-root access (Docker/Jellyfin)
-        "noauto" # Don't mount at boot
-        "x-systemd.automount" # Mount on access
-        "x-systemd.device-timeout=30" # Allow 30s for network/SSH
-        "IdentityFile=/root/.ssh/id_ed25519_nopass"
-        "Port=1810"
-        "uid=1000"
-        "gid=100"
-        "reconnect"
-        "ServerAliveInterval=15"
-        # Removed "debug" to avoid potential issues; re-add if needed
-      ];
-    };
+    # # SSHFS mount
+    # fileSystems."/redtower" = {
+    #   device =
+    #     "aaron@192.168.2.10:/"; # Remote root; adjust to /raidpool if needed
+    #   fsType = "sshfs";
+    #   options = [
+    #     "defaults"
+    #     "_netdev" # Wait for network
+    #     "allow_other" # Non-root access (Docker/Jellyfin)
+    #     "noauto" # Don't mount at boot
+    #     "x-systemd.automount" # Mount on access
+    #     "x-systemd.device-timeout=30" # Allow 30s for network/SSH
+    #     "IdentityFile=/root/.ssh/id_ed25519_nopass"
+    #     "Port=1810"
+    #     "uid=1000"
+    #     "gid=100"
+    #     "reconnect"
+    #     "ServerAliveInterval=15"
+    #     # Removed "debug" to avoid potential issues; re-add if needed
+    #   ];
+    # };
 
     boot.loader.grub.extraEntries = ''
       menuentry "Windows" {
@@ -144,11 +144,7 @@
           interface-name = "br0";
           autoconnect = true;
         };
-        ipv4 = {
-          method = "manual";
-          address1 = "192.168.1.12/24,192.168.1.1"; # IP/subnet,gateway
-          dns = "8.8.8.8;8.8.4.4;"; # DNS servers
-        };
+        ipv4 = { method = "auto"; };
         bridge = {
           stp =
             false; # Disable Spanning Tree Protocol (optional, enable if needed)
@@ -166,5 +162,6 @@
         };
       };
     };
+
   };
 }
