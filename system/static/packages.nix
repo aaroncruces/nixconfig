@@ -101,6 +101,8 @@
     smartmontools
     
     terraform
+    ansible-lint
+    tree
 
   ];
   
