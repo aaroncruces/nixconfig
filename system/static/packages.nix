@@ -104,6 +104,8 @@
     ansible-lint
     tree
 
+    qbittorrent
+
   ];
   
 programs.adb.enable = true;
