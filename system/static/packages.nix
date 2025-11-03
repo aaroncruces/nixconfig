@@ -106,6 +106,16 @@
 
     qbittorrent
 
+    nmap
+    jq
+
+    libreoffice
+    xorriso
+    cdrtools
+    kdePackages.k3b
+
+    nfs-utils
+
   ];
   
 programs.adb.enable = true;
