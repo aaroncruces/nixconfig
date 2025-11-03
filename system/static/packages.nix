@@ -87,7 +87,8 @@
     mpvpaper # video wallpaper program using mpv
     rclone
     iperf
-    nixfmt
+    # nixfmt
+    nixfmt-classic
     inetutils
     expect
     ventoy
