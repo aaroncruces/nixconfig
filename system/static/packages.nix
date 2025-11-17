@@ -120,13 +120,8 @@
     
     busybox
 
-<<<<<<< HEAD
 
     pandoc
-=======
-    zip
-
->>>>>>> 28d0558c1c2fcee49d373a7eec319c5046abaec0
   ];
   
 programs.adb.enable = true;
