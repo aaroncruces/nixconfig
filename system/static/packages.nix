@@ -116,6 +116,8 @@
 
     nfs-utils
 
+    zip
+
   ];
   
 programs.adb.enable = true;
