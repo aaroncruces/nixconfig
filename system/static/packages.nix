@@ -120,7 +120,7 @@
     
     busybox
 
-
+    python314Full
     pandoc
     zip
 
