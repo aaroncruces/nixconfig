@@ -116,7 +116,12 @@
     kdePackages.k3b
 
     nfs-utils
+    python3
+    
+    busybox
 
+
+    pandoc
   ];
   
 programs.adb.enable = true;
