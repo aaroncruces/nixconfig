@@ -123,8 +123,14 @@
 
     python314Full
     pandoc
-<<<<<<< HEAD
-  
+
+    zip
+
+    plantuml
+    graphviz
+
+    openjdk17-bootstrap
+
     nss_latest
     wireshark
 
@@ -147,17 +153,7 @@
   package = pkgs.wireshark;  # Optional: specify if you want a particular variant, like pkgs.wireshark-qt
   };
 
-=======
-    zip
 
-    plantuml
-    graphviz
-
-    openjdk17-bootstrap
-
-  ];
->>>>>>> dbbd97b0e9472fe766701f494e525317b073e89b
-  
 programs.adb.enable = true;
   nixpkgs.config.permittedInsecurePackages = [
                 "ventoy-1.1.05"
