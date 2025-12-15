@@ -6,10 +6,16 @@
 
     ./system/static/locale.nix
     ./system/static/desktop.nix
-    ./system/static/packages.nix
-    ./system/static/services.nix
+    
+    ./system/static/ssh.nix
     ./system/static/bootloader.nix
     ./system/static/audio.nix
+    ./system/static/adb.nix
+    ./system/static/dotnet.nix
+    ./system/static/fonts.nix
+    ./system/static/vm.nix
+    ./system/static/wireshark.nix
+    ./system/static/packages.nix
 
     ./system/static/bluetooth.nix
 
