@@ -1,6 +1,9 @@
 { config, lib, pkgs, ... }:
 
 {
+  users.groups.wireshark = {
+    members = [ "aaron" ];
+  };
   users.users.aaron = {
     isNormalUser = true;
     extraGroups = [
@@ -17,6 +20,7 @@
       "plugdev"
       "gamemode"
       "uinput"
+      "wireshark"
     ]; # sudo and NetworkManager access
     initialPassword = "changeme"; # Change after install
     shell = pkgs.zsh;

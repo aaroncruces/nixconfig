@@ -4,6 +4,7 @@
 
   environment.systemPackages = with pkgs; [
     # Browsers
+    grub2
     chromium # google chrome browser
     firefox # mozilla firefox browser
     # Database Tools
@@ -122,7 +123,29 @@
 
     python314Full
     pandoc
-  ];
+  
+    nss_latest
+    wireshark
+
+    ncdu
+    filezilla
+
+    f3
+    ];
+
+
+
+  # Add dotnet to PATH if needed (systemPackages already adds to PATH, but for clarity)
+  environment.extraInit = ''
+    export PATH=$PATH:${pkgs.dotnet-sdk_8}/bin
+  '';
+
+  
+  programs.wireshark = {
+  enable = true;
+  package = pkgs.wireshark;  # Optional: specify if you want a particular variant, like pkgs.wireshark-qt
+  };
+
   
 programs.adb.enable = true;
   nixpkgs.config.permittedInsecurePackages = [
