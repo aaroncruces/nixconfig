@@ -102,7 +102,7 @@
     smartmontools
     
     terraform
-    ansible-lint
+    # ansible-lint
     tree
 
     qbittorrent
@@ -123,6 +123,11 @@
     python314Full
     pandoc
     zip
+
+    plantuml
+    graphviz
+
+    openjdk17-bootstrap
 
   ];
   
