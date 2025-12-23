@@ -3,235 +3,147 @@
   nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages = with pkgs; [
+    # Boot and Partition Tools
+    grub2 # GRUB2 boot loader
+    efibootmgr # EFI boot manager configuration tool
+    gparted # GNOME partition editor
+    ventoy # Bootable USB creator for multiple ISOs
+    xorriso # ISO filesystem manipulation tool
+    cdrtools # CD/DVD/Blu-ray creation tools
+    kdePackages.k3b # KDE CD/DVD/Blu-ray burning application
+    f3 # Tool to test for fake flash drives and cards
+
     # Browsers
-    grub2
-    chromium # google chrome browser
-    firefox # mozilla firefox browser
+    chromium # Google Chrome browser
+    firefox # Mozilla Firefox browser
+
     # Database Tools
-    dbeaver-bin # universal database management tool
+    dbeaver-bin # Universal database management tool
+
     # Desktop Customization
-    font-manager # gui font selector and manager
-    lxappearance # gtk theme and appearance configurator
-    lxmenu-data # desktop menu data for lxde
-    nwg-look # gui gtk3 settings editor
-    rose-pine-cursor # rose pine themed cursor theme
-    shared-mime-info # mime database and utilities
-    xdg-user-dirs # tool to manage user directories
+    lxappearance # GTK theme and appearance configurator
+    lxmenu-data # Desktop menu data for LXDE
+    nwg-look # GUI GTK3 settings editor
+    rose-pine-cursor # Rose Pine themed cursor theme
+    shared-mime-info # MIME database and utilities
+    xdg-user-dirs # Tool to manage user directories
+    mpvpaper # Video wallpaper program using MPV
+
     # Development Tools
-    autoconf # automatic configure script builder
-    automake # tool for generating makefile.in files
-    azure-cli # microsoft azure command line interface
-    binutils # collection of binary tools
-    claude-code # anthropic claude code assistant
-    cmake # cross-platform build system
-    gcc # gnu compiler collection
-    git # distributed version control system
-    gnumake # gnu implementation of make
-    nodejs_24 # javascript runtime environment v24
-    openssl # cryptographic library and tools
-    parallel # shell tool for executing jobs in parallel
-    postman # api development and testing platform
-    stow # symlink farm manager
+    autoconf # Automatic configure script builder
+    automake # Tool for generating Makefile.in files
+    azure-cli # Microsoft Azure command line interface
+    binutils # Collection of binary tools
+    claude-code # Anthropic Claude code assistant
+    cmake # Cross-platform build system
+    gcc # GNU compiler collection
+    git # Distributed version control system
+    gnumake # GNU implementation of make
+    nodejs_24 # JavaScript runtime environment v24
+    openssl # Cryptographic library and tools
+    parallel # Shell tool for executing jobs in parallel
+    postman # API development and testing platform
+    stow # Symlink farm manager
+    terraform # Infrastructure as code tool
+    ansible # Automation and configuration management tool
+    # ansible-lint # Linter for Ansible playbooks
+    nixfmt-classic # Classic Nix code formatter
+    plantuml # UML diagram generator
+    graphviz # Graph visualization software
+    openjdk17-bootstrap # OpenJDK 17 bootstrap
+    python3 # Python 3 interpreter
+    python314Full # Full Python 3.14 distribution
+    busybox # Swiss army knife of embedded Linux utilities
+
     # Document Tools
-    texliveFull # complete tex live distribution
+    texliveFull # Complete TeX Live distribution
+    pandoc # Universal document converter
+    libreoffice # Open-source office suite
+    onlyoffice-desktopeditors # Office suite compatible with MS Office
+
     # Editors and IDEs
-    featherpad # lightweight qt text editor
-    neovim # modern vim-based text editor
-    obsidian # knowledge management and note-taking app
-    onlyoffice-desktopeditors # office suite compatible with ms office
-    vscode # visual studio code editor
+    featherpad # Lightweight Qt text editor
+    neovim # Modern Vim-based text editor
+    obsidian # Knowledge management and note-taking app
+    vscode # Visual Studio Code editor
+
     # File Managers and Archivers
-    pcmanfm # lightweight file manager for lxde
-    peazip # cross-platform file archiver
-    unzip # extraction utility for zip archives
+    pcmanfm # Lightweight file manager for LXDE
+    peazip # Cross-platform file archiver
+    unzip # Extraction utility for ZIP archives
+    zip # Compression utility for ZIP archives
+    filezilla # FTP/SFTP client
+    gthumb # Image viewer and organizer
+    ncdu # NCurses disk usage analyzer
+    tree # Directory tree listing tool
+
     # File Systems and Mounting
-    gvfs # gnome virtual file system
-    libmtp # library for mtp device access
-    ntfs3g # ntfs filesystem driver with read/write support
-    samba # smb/cifs file sharing protocol implementation
+    gvfs # GNOME virtual file system
+    libmtp # Library for MTP device access
+    ntfs3g # NTFS filesystem driver with read/write support
+    samba # SMB/CIFS file sharing protocol implementation
+    nfs-utils # NFS client and server utilities
+    rclone # Rsync for cloud storage
+
     # Gaming
-    jstest-gtk # joystick testing and configuration tool
-    steam # digital distribution platform for games
+    jstest-gtk # Joystick testing and configuration tool
+    steam # Digital distribution platform for games
+
     # Media Players
-    mpv # command-line media player
-    vlc # versatile media player
+    mpv # Command-line media player
+    vlc # Versatile media player
+
     # Media Utilities
-    #ffmpeg # multimedia framework for audio/video processing
-    yt-dlp # youtube and media downloader
-    # Partition and Boot Tools
-    efibootmgr # efi boot manager configuration tool
-    gparted # gnome partition editor
+    ffmpeg # Multimedia framework for audio/video processing
+    yt-dlp # YouTube and media downloader
+
+    # Network Tools
+    inetutils # GNU network utilities
+    iperf # Network performance measurement tool
+    nmap # Network discovery and security auditing tool
+    jq # Command-line JSON processor
+
     # Remote Access
-    remmina # remote desktop client
+    remmina # Remote desktop client
+    sshpass # Non-interactive SSH password provider
+
     # Security
-    keepassxc # cross-platform password manager
+    keepassxc # Cross-platform password manager
+
     # System Monitoring
-    htop # interactive process viewer
-    psmisc # utilities for managing processes
+    htop # Interactive process viewer
+    psmisc # Utilities for managing processes
+    acpi # ACPI information tool
+    hdparm # Hard disk parameter tool
+    smartmontools # SMART disk monitoring tools
+    usbutils # USB device listing utilities
+    nss_latest # Latest Network Security Services library
+
     # Terminal Tools
-    ghostty # fast terminal emulator
-    kitty # gpu-accelerated terminal emulator
-    oh-my-posh # cross-platform prompt theme engine
-    tmux # terminal multiplexer
-    # Virtualization
-    virt-manager # gui for managing virtual machines
-    swtpm
-    dnsmasq
-    virtio-win
-    win-spice
-    virglrenderer
-    cdrtools
+    ghostty # Fast terminal emulator
+    kitty # GPU-accelerated terminal emulator
+    oh-my-posh # Cross-platform prompt theme engine
+    tmux # Terminal multiplexer
+
+    # Torrent Clients
+    qbittorrent # BitTorrent client
+
     # VPN
-    openfortivpn # client for fortinet vpn
-    openvpn # open source vpn solution
-    # Wallpaper
-    mpvpaper # video wallpaper program using mpv
-    rclone
-    iperf
-    # nixfmt
-    nixfmt-classic
-    inetutils
-    expect
-    ventoy
-    gthumb
-    usbutils
+    openfortivpn # Client for Fortinet VPN
+    openvpn # Open source VPN solution
 
-    ansible
-    sshpass
-    acpi
-    hdparm
-    smartmontools
-    
-    terraform
-    # ansible-lint
-    tree
+    # Miscellaneous
+    expect # Tool for automating interactive applications
 
-    qbittorrent
 
-    nmap
-    jq
-
-    libreoffice
-    xorriso
-    cdrtools
-    kdePackages.k3b
-
-    nfs-utils
-    python3
-    
-    busybox
-
-    python314Full
-    pandoc
-<<<<<<< HEAD
-    zip
-
-    plantuml
-    graphviz
-
-    openjdk17-bootstrap
-
+    libxml2 
   ];
-  
-=======
 
-    zip
-
-    plantuml
-    graphviz
-
-    openjdk17-bootstrap
-
-    nss_latest
-    wireshark
-
-    ncdu
-    filezilla
-
-    f3
-    ];
-
-
-
-  # Add dotnet to PATH if needed (systemPackages already adds to PATH, but for clarity)
-  environment.extraInit = ''
-    export PATH=$PATH:${pkgs.dotnet-sdk_8}/bin
-  '';
-
-  
-  programs.wireshark = {
-  enable = true;
-  package = pkgs.wireshark;  # Optional: specify if you want a particular variant, like pkgs.wireshark-qt
-  };
-
-
->>>>>>> a4725cc4e45c09d42497ff2d83954c7c8e6a6035
-programs.adb.enable = true;
-  nixpkgs.config.permittedInsecurePackages = [
-                "ventoy-1.1.05"
-              ];
-  fonts.packages = with pkgs; [
-    arkpandora_ttf # free truetype font collection
-    corefonts # microsoft core fonts (arial, times new roman, etc.)
-    font-awesome # iconic font and css toolkit
-    nerd-fonts.jetbrains-mono # jetbrains mono font with programming ligatures
-    vistafonts # microsoft vista fonts (calibri, consolas, etc.)
-  ];
+  nixpkgs.config.permittedInsecurePackages = [ "ventoy-1.1.05" ];
   # Enable GVFS services
   services.gvfs.enable = true;
   services.udisks2.enable = true; # For auto-mounting removable devices
   services.devmon.enable = true; # For auto-mounting removable devices
-  virtualisation = {
-    docker = {
-      enable = true;
-      storageDriver = "btrfs";
-      daemon.settings = {
-        features = {
-          cdi = true; # Enables Container Device Interface for GPU passthrough
-        };
-      };
-    };
-    virtualbox.host = {
-      enable = true;
-      enableExtensionPack =
-        true; # enables oracle extension pack for usb support
-      enableKvm = true;
-      addNetworkInterface =
-        false; # modprobe disable kvm if needed to use not/nat network
-    };
-    libvirtd = {
-      enable = true;
-      qemu = {
-        vhostUserPackages = with pkgs; [ virtiofsd ];
-        swtpm.enable = true;
-        ovmf.enable = true;
-        ovmf.packages = [ pkgs.OVMFFull.fd ];
-      };
-    };
-    spiceUSBRedirection.enable = true; # enable usb redirection in virt-manager
-  };
-  # Enable virt-manager
-  programs.virt-manager.enable = true;
-  users.extraGroups.vboxusers.members = [ "user-with-access-to-virtualbox" ];
-  users.extraGroups.libvirtd.members = [ "user-with-access-to-virtualbox" ];
-  
   programs.gamemode.enable = true;
-
-  # Automatically create virtio-win.iso on activation
-  system.activationScripts.createVirtioIso = lib.stringAfter [ "var" ] ''
-    mkdir -p /var/lib/libvirt/images
-    if [ ! -f /var/lib/libvirt/images/virtio-win.iso ]; then
-      ${pkgs.cdrtools}/bin/mkisofs -o /var/lib/libvirt/images/virtio-win.iso -J -R ${pkgs.virtio-win}
-      chown root:kvm /var/lib/libvirt/images/virtio-win.iso
-      chmod 644 /var/lib/libvirt/images/virtio-win.iso
-    fi
-  '';
-
-  environment.etc."qemu/bridge.conf" = {
-    text = ''
-      allow br0
-      allow virbr0
-    '';
-  };
 
 }
