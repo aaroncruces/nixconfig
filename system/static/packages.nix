@@ -123,31 +123,6 @@
 
     python314Full
     pandoc
-<<<<<<< HEAD
-  
-    nss_latest
-    wireshark
-
-    ncdu
-    filezilla
-
-    f3
-    ];
-
-
-
-  # Add dotnet to PATH if needed (systemPackages already adds to PATH, but for clarity)
-  environment.extraInit = ''
-    export PATH=$PATH:${pkgs.dotnet-sdk_8}/bin
-  '';
-
-  
-  programs.wireshark = {
-  enable = true;
-  package = pkgs.wireshark;  # Optional: specify if you want a particular variant, like pkgs.wireshark-qt
-  };
-
-=======
     zip
 
     plantuml
@@ -156,7 +131,6 @@
     openjdk17-bootstrap
 
   ];
->>>>>>> dbbd97b0e9472fe766701f494e525317b073e89b
   
 programs.adb.enable = true;
   nixpkgs.config.permittedInsecurePackages = [
