@@ -123,6 +123,7 @@
 
     python314Full
     pandoc
+<<<<<<< HEAD
     zip
 
     plantuml
@@ -132,6 +133,39 @@
 
   ];
   
+=======
+
+    zip
+
+    plantuml
+    graphviz
+
+    openjdk17-bootstrap
+
+    nss_latest
+    wireshark
+
+    ncdu
+    filezilla
+
+    f3
+    ];
+
+
+
+  # Add dotnet to PATH if needed (systemPackages already adds to PATH, but for clarity)
+  environment.extraInit = ''
+    export PATH=$PATH:${pkgs.dotnet-sdk_8}/bin
+  '';
+
+  
+  programs.wireshark = {
+  enable = true;
+  package = pkgs.wireshark;  # Optional: specify if you want a particular variant, like pkgs.wireshark-qt
+  };
+
+
+>>>>>>> a4725cc4e45c09d42497ff2d83954c7c8e6a6035
 programs.adb.enable = true;
   nixpkgs.config.permittedInsecurePackages = [
                 "ventoy-1.1.05"
