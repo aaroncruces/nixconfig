@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }: {
   # Allow non-free packages
-  nixpkgs.config.allowUnfree = true;
+  # nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages = with pkgs; [
     font-manager # GUI font selector and manager

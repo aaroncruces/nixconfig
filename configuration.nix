@@ -16,6 +16,8 @@
     ./system/static/vm.nix
     ./system/static/wireshark.nix
     ./system/static/packages.nix
+    ./system/static/autologin.nix
+    
 
     ./system/static/bluetooth.nix
 
@@ -32,6 +34,7 @@
     ./user/services.nix
     ./user/homemanager.nix
   ];
+  nixpkgs.config.allowUnfree = true;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   system.stateVersion = "25.05"; # Keep 25.05 for state compatibility
 }

@@ -10,7 +10,7 @@
 {
   # nixpkgs.overlays = [ (import "${nvidiaPatchSrc}/overlay.nix") ];
 
-  nixpkgs.config.allowUnfree = true;
+  # nixpkgs.config.allowUnfree = true;
 
   # NVIDIA driver setup
   services.xserver = {

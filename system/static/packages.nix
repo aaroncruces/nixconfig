@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }: {
   # Allow non-free packages
-  nixpkgs.config.allowUnfree = true;
+  # nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages = with pkgs; [
     # Boot and Partition Tools
@@ -135,8 +135,13 @@
     # Miscellaneous
     expect # Tool for automating interactive applications
 
+    gparted
+
+    duf
 
     libxml2 
+
+    gimp
   ];
 
   nixpkgs.config.permittedInsecurePackages = [ "ventoy-1.1.05" ];
