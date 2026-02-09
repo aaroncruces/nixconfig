@@ -141,7 +141,17 @@
 
     libxml2 
 
+    python313Packages.deemix
+
     gimp
+
+    wireguard-tools
+
+    lunar-client
+
+    cheese
+
+    pv
   ];
 
   nixpkgs.config.permittedInsecurePackages = [ "ventoy-1.1.05" ];
