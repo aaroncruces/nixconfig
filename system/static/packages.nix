@@ -152,6 +152,8 @@
     cheese
 
     pv
+
+    exfatprogs
   ];
 
   nixpkgs.config.permittedInsecurePackages = [ "ventoy-1.1.05" ];
