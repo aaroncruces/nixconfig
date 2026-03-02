@@ -141,6 +141,8 @@
 
     libxml2 
 
+    python313Packages.deemix
+
     gimp
 
     anydesk
@@ -150,6 +152,15 @@
     python3Packages.weasyprint
 
     p7zip
+    wireguard-tools
+
+    lunar-client
+
+    cheese
+
+    pv
+
+    exfatprogs
   ];
 
   nixpkgs.config.permittedInsecurePackages = [ "ventoy-1.1.05" ];

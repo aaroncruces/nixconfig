@@ -16,8 +16,7 @@
     ./system/static/vm.nix
     ./system/static/wireshark.nix
     ./system/static/packages.nix
-    ./system/static/autologin.nix
-    
+    # ./system/static/autologin.nix
 
     ./system/static/bluetooth.nix
 
