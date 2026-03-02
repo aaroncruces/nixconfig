@@ -44,7 +44,32 @@
     # '';
 
     services.openssh.ports = [ 1812 ];
-    # ------------------------------------------------------
+
+
+
+
+# Enable SSHFS support
+  boot.supportedFilesystems = [ "sshfs" ];
+
+  fileSystems."/redtower" = {
+    device = "aaron@192.168.2.10:/";
+    fsType = "sshfs";
+    options = [
+      "allow_other"
+      "default_permissions"
+      "reconnect"
+      "port=1810"
+      "IdentityFile=/home/aaron/.ssh/id_ed25519_nopass"
+      "_netdev"
+      "x-systemd.automount"
+      "noauto"
+      "nofail"
+    ];
+  };
+
+
+
+# ------------------------------------------------------
     # Enable NetworkManager
     networking.networkmanager.enable = true;
 

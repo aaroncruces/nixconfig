@@ -142,6 +142,14 @@
     libxml2 
 
     gimp
+
+    anydesk
+
+    pandoc
+
+    python3Packages.weasyprint
+
+    p7zip
   ];
 
   nixpkgs.config.permittedInsecurePackages = [ "ventoy-1.1.05" ];
