@@ -163,7 +163,17 @@
     exfatprogs
 
     exiftool
+    
+    imagemagick
+
+    # for usb serial. change it to other file
+    screen
+    picocom
   ];
+
+  # for usb serial. change it to other file
+  boot.kernelModules = [ "usbserial" "ch341" "pl2303" "ftdi_sio" "cp210x" "8250" "serial8250" "8250_core"];
+  boot.kernelParams = [ "8250.nr_uarts=4" ];
 
   nixpkgs.config.permittedInsecurePackages = [ "ventoy-1.1.05" ];
   # Enable GVFS services

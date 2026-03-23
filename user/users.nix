@@ -21,6 +21,8 @@
       "gamemode"
       "uinput"
       "wireshark"
+      # for usb serial. change it to other file
+      "dialout"
     ]; # sudo and NetworkManager access
     initialPassword = "changeme"; # Change after install
     shell = pkgs.zsh;
