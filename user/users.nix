@@ -21,6 +21,8 @@
       "gamemode"
       "uinput"
       "wireshark"
+      "cdrom"
+      "optical"
       # for usb serial. change it to other file
       "dialout"
     ]; # sudo and NetworkManager access
