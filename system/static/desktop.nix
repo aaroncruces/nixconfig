@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports = [ ./desktops/i3.nix ./desktops/hyprland.nix ];
+  imports = [ ./desktops/i3.nix ./desktops/hyprland.nix ./desktops/gnome.nix ];
 
 }
