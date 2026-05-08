@@ -11,6 +11,12 @@
     xorriso # ISO filesystem manipulation tool
     cdrtools # CD/DVD/Blu-ray creation tools
     kdePackages.k3b # KDE CD/DVD/Blu-ray burning application
+    cdrtools          # ← this is what K3b is complaining about (cdrecord, readcd, mkisofs…)
+    dvdplusrwtools    # growisofs, dvd+rw-format, etc. — required for DVDs
+    cdrdao            # for some advanced CD/DVD features (DAO mode, etc.)
+    libdvdcss         # ← VERY important if your DVD is a commercial/video DVD (CSS encryption)
+
+
     f3 # Tool to test for fake flash drives and cards
 
     # Browsers
@@ -45,8 +51,12 @@
     postman # API development and testing platform
     stow # Symlink farm manager
     terraform # Infrastructure as code tool
-    ansible # Automation and configuration management tool
-    # ansible-lint # Linter for Ansible playbooks
+    ansible          # main ansible (includes ansible-core + collections)
+    ansible-lint     # the linter the extension complains about
+    ansible-navigator # highly recommended — gives you a nice text UI
+    molecule         # testing (if you want the extension to stop complaining)
+    yamllint         # extra YAML linting (often used together with ansible-lint)
+    # ansible-builder # optional — only if you ever build Execution Environments later
     nixfmt-classic # Classic Nix code formatter
     plantuml # UML diagram generator
     graphviz # Graph visualization software
@@ -163,7 +173,31 @@
     exfatprogs
 
     exiftool
+    
+    imagemagick
+
+    # for usb serial. change it to other file
+    screen
+    picocom
+
+    arandr
+    libxcvt
+
+    entr
+
+    mpvpaper
+
+    socat
+    meson
+    ninja
+    pkg-config
+    cjson
+
   ];
+
+  # for usb serial. change it to other file
+  boot.kernelModules = [ "usbserial" "ch341" "pl2303" "ftdi_sio" "cp210x" "8250" "serial8250" "8250_core"];
+  boot.kernelParams = [ "8250.nr_uarts=4" ];
 
   nixpkgs.config.permittedInsecurePackages = [ "ventoy-1.1.05" ];
   # Enable GVFS services
