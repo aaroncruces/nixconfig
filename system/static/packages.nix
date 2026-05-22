@@ -51,6 +51,7 @@
     postman # API development and testing platform
     stow # Symlink farm manager
     terraform # Infrastructure as code tool
+    opentofu
     ansible          # main ansible (includes ansible-core + collections)
     ansible-lint     # the linter the extension complains about
     ansible-navigator # highly recommended — gives you a nice text UI
@@ -192,6 +193,11 @@
     ninja
     pkg-config
     cjson
+
+    ripgrep
+
+    lua
+    lua-language-server
 
   ];
 
