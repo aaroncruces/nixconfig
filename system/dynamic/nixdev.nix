@@ -69,9 +69,34 @@
           type = "bridge";
           interface-name = "br0";
           autoconnect = true;
+          autoconnect-priority = 100;
         };
         ipv4 = {
           method = "auto"; # Enable DHCP for the bridge
+          may-fail = false;
+          dhcp-timeout = 20;
+        };
+        bridge = {
+          stp =
+            false; # Disable Spanning Tree Protocol (optional, enable if needed)
+          ageing-time = 300;
+        };
+      };
+      bridge-br0-static-fallback = {
+        connection = {
+          id = "bridge-br0-static-fallback";
+          type = "bridge";
+          interface-name = "br0";
+          autoconnect = true;
+          autoconnect-priority = -100;
+        };
+        ipv4 = {
+          method = "manual";
+          addresses = "200.200.200.12/24";
+          never-default = true;
+        };
+        ipv6 = {
+          method = "ignore";
         };
         bridge = {
           stp =

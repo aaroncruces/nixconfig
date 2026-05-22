@@ -189,10 +189,6 @@
     mpvpaper
 
     socat
-    meson
-    ninja
-    pkg-config
-    cjson
 
     ripgrep
 
