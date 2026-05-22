@@ -188,13 +188,8 @@
     mpvpaper
 
     socat
-    # meson
-    # ninja
-    # pkg-config
-    # cjson
 
   ];
-
 
   # for usb serial. change it to other file
   boot.kernelModules = [ "usbserial" "ch341" "pl2303" "ftdi_sio" "cp210x" "8250" "serial8250" "8250_core"];
