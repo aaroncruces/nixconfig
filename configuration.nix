@@ -11,6 +11,7 @@
     ./system/static/bootloader.nix
     ./system/static/audio.nix
     ./system/static/adb.nix
+    ./system/static/pspdevel.nix
     ./system/static/dotnet.nix
     ./system/static/fonts.nix
     ./system/static/vm.nix
