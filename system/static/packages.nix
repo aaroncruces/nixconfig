@@ -195,6 +195,9 @@
     lua
     lua-language-server
 
+    dmidecode
+    
+
   ];
 
   # for usb serial. change it to other file
