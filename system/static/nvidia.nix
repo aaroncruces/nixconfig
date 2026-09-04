@@ -17,11 +17,11 @@
     enable = true;
     videoDrivers = [ "nvidia" ];
     exportConfiguration = true;
-    displayManager.gdm.enable = true;
-    desktopManager.gnome.enable = false; # Adjust if using GNOME
     # displayManager.autoLogin.enable = true;
     # displayManager.autoLogin.user = "aaron";
   };
+  services.desktopManager.gnome.enable = true;
+  services.displayManager.gdm.enable = true;
 
   hardware = {
     # OpenGL support (for 24.05+; use graphics.enable in unstable)

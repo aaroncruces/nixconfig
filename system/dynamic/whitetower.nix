@@ -26,12 +26,27 @@
     ## FUSE kernel module
     boot.kernelModules = [ "fuse" ];
 
+    # Enable iGPU passthrough for VMs on whitetower.
+    boot.kernelParams =
+      [ "amd_iommu=on" "iommu=pt" "vfio-pci.ids=1002:15dd,1002:15de" ];
+
+    boot.initrd.kernelModules = [ "vfio_pci" "vfio" "vfio_iommu_type1" ];
+
+    boot.blacklistedKernelModules = [ "amdgpu" "radeon" ];
+
+    boot.extraModprobeConfig = ''
+      options vfio-pci ids=1002:15dd,1002:15de
+      softdep amdgpu pre: vfio-pci
+    '';
+
+    virtualisation.libvirtd.enable = true;
+    programs.virt-manager.enable = true;
+
     # FUSE userspace config
     programs.fuse.userAllowOther = true;
 
     # Install SSHFS
     environment.systemPackages = with pkgs; [ fuse3 sshfs sshfs-fuse ];
-
 
     # boot.loader.grub.extraEntries = ''
     #   menuentry "Windows" {
@@ -45,31 +60,26 @@
 
     services.openssh.ports = [ 1812 ];
 
+    # Enable SSHFS support
+    boot.supportedFilesystems = [ "sshfs" ];
 
+    fileSystems."/redtower" = {
+      device = "aaron@192.168.2.10:/";
+      fsType = "sshfs";
+      options = [
+        "allow_other"
+        "default_permissions"
+        "reconnect"
+        "port=1810"
+        "IdentityFile=/home/aaron/.ssh/id_ed25519_nopass"
+        "_netdev"
+        "x-systemd.automount"
+        "noauto"
+        "nofail"
+      ];
+    };
 
-
-# Enable SSHFS support
-  boot.supportedFilesystems = [ "sshfs" ];
-
-  fileSystems."/redtower" = {
-    device = "aaron@192.168.2.10:/";
-    fsType = "sshfs";
-    options = [
-      "allow_other"
-      "default_permissions"
-      "reconnect"
-      "port=1810"
-      "IdentityFile=/home/aaron/.ssh/id_ed25519_nopass"
-      "_netdev"
-      "x-systemd.automount"
-      "noauto"
-      "nofail"
-    ];
-  };
-
-
-
-# ------------------------------------------------------
+    # ------------------------------------------------------
     # Enable NetworkManager
     networking.networkmanager.enable = true;
 

@@ -11,6 +11,6 @@
     corefonts # microsoft core fonts (arial, times new roman, etc.)
     font-awesome # iconic font and css toolkit
     nerd-fonts.jetbrains-mono # jetbrains mono font with programming ligatures
-    vistafonts # microsoft vista fonts (calibri, consolas, etc.)
+    vista-fonts # microsoft vista fonts (calibri, consolas, etc.)
   ];
 }

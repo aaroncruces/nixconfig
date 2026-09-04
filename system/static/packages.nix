@@ -3,208 +3,197 @@
   # nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages = with pkgs; [
-    # Boot and Partition Tools
-    grub2 # GRUB2 boot loader
-    efibootmgr # EFI boot manager configuration tool
-    gparted # GNOME partition editor
-    ventoy # Bootable USB creator for multiple ISOs
-    xorriso # ISO filesystem manipulation tool
-    cdrtools # CD/DVD/Blu-ray creation tools
-    kdePackages.k3b # KDE CD/DVD/Blu-ray burning application
-    cdrtools          # ← this is what K3b is complaining about (cdrecord, readcd, mkisofs…)
-    dvdplusrwtools    # growisofs, dvd+rw-format, etc. — required for DVDs
-    cdrdao            # for some advanced CD/DVD features (DAO mode, etc.)
-    libdvdcss         # ← VERY important if your DVD is a commercial/video DVD (CSS encryption)
-
-
-    f3 # Tool to test for fake flash drives and cards
+    # Boot and partition tools
+    efibootmgr
+    f3
+    gparted
+    grub2
+    ventoy
 
     # Browsers
-    chromium # Google Chrome browser
-    firefox # Mozilla Firefox browser
+    chromium
+    firefox
 
-    # Database Tools
-    dbeaver-bin # Universal database management tool
+    # CD/DVD/Blu-ray tools
+    cdrdao
+    cdrtools
+    dvdplusrwtools
+    kdePackages.k3b
+    libdvdcss
+    xorriso
 
-    # Desktop Customization
-    lxappearance # GTK theme and appearance configurator
-    lxmenu-data # Desktop menu data for LXDE
-    nwg-look # GUI GTK3 settings editor
-    rose-pine-cursor # Rose Pine themed cursor theme
-    shared-mime-info # MIME database and utilities
-    xdg-user-dirs # Tool to manage user directories
-    mpvpaper # Video wallpaper program using MPV
+    # Database tools
+    dbeaver-bin
 
-    # Development Tools
-    autoconf # Automatic configure script builder
-    automake # Tool for generating Makefile.in files
-    azure-cli # Microsoft Azure command line interface
-    binutils # Collection of binary tools
-    claude-code # Anthropic Claude code assistant
-    cmake # Cross-platform build system
-    gcc # GNU compiler collection
-    git # Distributed version control system
-    gnumake # GNU implementation of make
-    nodejs_24 # JavaScript runtime environment v24
-    openssl # Cryptographic library and tools
-    parallel # Shell tool for executing jobs in parallel
-    postman # API development and testing platform
-    stow # Symlink farm manager
-    terraform # Infrastructure as code tool
-    opentofu
-    ansible          # main ansible (includes ansible-core + collections)
-    ansible-lint     # the linter the extension complains about
-    ansible-navigator # highly recommended — gives you a nice text UI
-    molecule         # testing (if you want the extension to stop complaining)
-    yamllint         # extra YAML linting (often used together with ansible-lint)
-    # ansible-builder # optional — only if you ever build Execution Environments later
-    nixfmt-classic # Classic Nix code formatter
-    plantuml # UML diagram generator
-    graphviz # Graph visualization software
-    openjdk17-bootstrap # OpenJDK 17 bootstrap
-    python3 # Python 3 interpreter
-    python314Full # Full Python 3.14 distribution
-    busybox # Swiss army knife of embedded Linux utilities
-
-    # Document Tools
-    texliveFull # Complete TeX Live distribution
-    pandoc # Universal document converter
-    libreoffice # Open-source office suite
-    onlyoffice-desktopeditors # Office suite compatible with MS Office
-
-    # Editors and IDEs
-    featherpad # Lightweight Qt text editor
-    neovim # Modern Vim-based text editor
-    obsidian # Knowledge management and note-taking app
-    vscode # Visual Studio Code editor
-
-    # File Managers and Archivers
-    pcmanfm # Lightweight file manager for LXDE
-    peazip # Cross-platform file archiver
-    unzip # Extraction utility for ZIP archives
-    zip # Compression utility for ZIP archives
-    filezilla # FTP/SFTP client
-    gthumb # Image viewer and organizer
-    ncdu # NCurses disk usage analyzer
-    tree # Directory tree listing tool
-
-    # File Systems and Mounting
-    gvfs # GNOME virtual file system
-    libmtp # Library for MTP device access
-    ntfs3g # NTFS filesystem driver with read/write support
-    samba # SMB/CIFS file sharing protocol implementation
-    nfs-utils # NFS client and server utilities
-    rclone # Rsync for cloud storage
-
-    # Gaming
-    jstest-gtk # Joystick testing and configuration tool
-    steam # Digital distribution platform for games
-
-    # Media Players
-    mpv # Command-line media player
-    vlc # Versatile media player
-
-    # Media Utilities
-    ffmpeg # Multimedia framework for audio/video processing
-    yt-dlp # YouTube and media downloader
-
-    # Network Tools
-    inetutils # GNU network utilities
-    iperf # Network performance measurement tool
-    nmap # Network discovery and security auditing tool
-    jq # Command-line JSON processor
-
-    # Remote Access
-    remmina # Remote desktop client
-    sshpass # Non-interactive SSH password provider
-
-    # Security
-    keepassxc # Cross-platform password manager
-
-    # System Monitoring
-    htop # Interactive process viewer
-    psmisc # Utilities for managing processes
-    acpi # ACPI information tool
-    hdparm # Hard disk parameter tool
-    smartmontools # SMART disk monitoring tools
-    usbutils # USB device listing utilities
-    nss_latest # Latest Network Security Services library
-
-    # Terminal Tools
-    ghostty # Fast terminal emulator
-    kitty # GPU-accelerated terminal emulator
-    oh-my-posh # Cross-platform prompt theme engine
-    tmux # Terminal multiplexer
-
-    # Torrent Clients
-    qbittorrent # BitTorrent client
-
-    # VPN
-    openfortivpn # Client for Fortinet VPN
-    openvpn # Open source VPN solution
-
-    # Miscellaneous
-    expect # Tool for automating interactive applications
-
-    gparted
-
-    duf
-
-    libxml2 
-
-    python313Packages.deemix
-
-    gimp
-
-    anydesk
-
-    pandoc
-
-    python3Packages.weasyprint
-
-    p7zip
-    wireguard-tools
-
-    lunar-client
-
-    cheese
-
-    pv
-
-    exfatprogs
-
-    exiftool
-    
-    imagemagick
-
-    # for usb serial. change it to other file
-    screen
-    picocom
-
+    # Desktop customization
     arandr
     libxcvt
-
-    entr
-
+    lxappearance
+    lxmenu-data
     mpvpaper
+    nwg-look
+    rose-pine-cursor
+    shared-mime-info
+    xdg-user-dirs
 
-    socat
-
-    ripgrep
-
+    # Development tools
+    ansible
+    ansible-lint
+    ansible-navigator
+    autoconf
+    automake
+    azure-cli
+    binutils
+    busybox
+    claude-code
+    cmake
+    entr
+    gcc
+    git
+    gnumake
+    graphviz
+    jq
     lua
     lua-language-server
+    molecule
+    nixfmt-classic
+    nodejs_24
+    openjdk17-bootstrap
+    openssl
+    opentofu
+    parallel
+    plantuml
+    pnpm
+    postman
+    python3
+    ripgrep
+    stow
+    terraform
+    yamllint
 
+    # Document tools
+    libreoffice
+    onlyoffice-desktopeditors
+    pandoc
+    python3Packages.weasyprint
+    texliveFull
+
+    # Editors and IDEs
+    featherpad
+    neovim
+    obsidian
+    vscode
+
+    # File managers and archivers
+    filezilla
+    gthumb
+    ncdu
+    p7zip
+    pcmanfm
+    peazip
+    tree
+    unrar-wrapper
+    unzip
+    zip
+
+    # File systems and mounting
+    e2fsprogs
+    exfatprogs
+    gvfs
+    libmtp
+    nfs-utils
+    ntfs3g
+    rclone
+    samba
+
+    # Gaming
+    jstest-gtk
+    lunar-client
+    steam
+
+    # Graphics and camera
+    cheese
+    exiftool
+    gimp
+    imagemagick
+
+    # Media players and utilities
+    ffmpeg
+    mpv
+    python313Packages.deemix
+    vlc
+    yt-dlp
+
+    # Network tools
+    inetutils
+    iperf
+    libxml2
+    nmap
+    socat
+
+    # Remote access
+    anydesk
+    remmina
+    sshpass
+
+    # Security
+    keepassxc
+
+    # Serial tools
+    picocom
+    screen
+
+    # System monitoring
+    acpi
     dmidecode
-    
+    duf
+    hdparm
+    htop
+    nss_latest
+    pciutils
+    psmisc
+    pv
+    smartmontools
+    usbutils
+
+    # Terminal tools
+    expect
+    ghostty
+    kitty
+    oh-my-posh
+    tmux
+
+    # Torrent clients
+    qbittorrent
+
+    # VPN
+    openfortivpn
+    openvpn
+    wireguard-tools
+
+    # Wayland screen capture
+    grim
+    slurp
+    swappy
+    wl-clipboard
 
   ];
 
   # for usb serial. change it to other file
-  boot.kernelModules = [ "usbserial" "ch341" "pl2303" "ftdi_sio" "cp210x" "8250" "serial8250" "8250_core"];
+  boot.kernelModules = [
+    "usbserial"
+    "ch341"
+    "pl2303"
+    "ftdi_sio"
+    "cp210x"
+    "8250"
+    "serial8250"
+    "8250_core"
+  ];
   boot.kernelParams = [ "8250.nr_uarts=4" ];
 
-  nixpkgs.config.permittedInsecurePackages = [ "ventoy-1.1.05" ];
+  nixpkgs.config.permittedInsecurePackages =
+    [ "ventoy-1.1.05" "ventoy-1.1.12" ];
   # Enable GVFS services
   services.gvfs.enable = true;
   services.udisks2.enable = true; # For auto-mounting removable devices
