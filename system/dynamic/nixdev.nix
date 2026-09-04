@@ -1,6 +1,70 @@
 { config, lib, pkgs, ... }:
 
-{
+let
+  # Import the reusable bridge/address-cascade builder. This keeps host-specific
+  # networking policy in this file while putting the shared implementation in
+  # system/lib/.
+  networkmanagerBridgeAddressCascade =
+    import ../lib/networkmanager-bridge-address-cascade.nix {
+      inherit lib pkgs;
+    };
+
+  # Build the complete NetworkManager configuration fragment for nixdev's wired
+  # bridge. The result contains two pieces used below:
+  #   - dispatcherScript: the NetworkManager dispatcher hook.
+  #   - profiles: the bridge, fallback, and bridge-slave connection profiles.
+  nixdevBridgeAddressCascade =
+    networkmanagerBridgeAddressCascade.mkBridgeDhcpAddressCascade {
+      # Name of the Linux bridge interface exposed to the rest of the system.
+      bridgeInterface = "br0";
+
+      # Physical NIC that NetworkManager enslaves into the bridge.
+      ethernetInterface = "enp8s0";
+
+      # NetworkManager tries DHCP first. If no DHCP server answers within the
+      # timeout, it falls back to the static profile below.
+
+      # Declarative NetworkManager profile ID for the normal DHCP bridge.
+      dhcpProfileId = "bridge-br0";
+
+      # Declarative NetworkManager profile ID for the no-DHCP fallback bridge.
+      noDhcpFallbackProfileId = "bridge-br0-static-fallback";
+
+      # Static IPv4 address used when the fallback profile is activated.
+      noDhcpFallbackAddress = "200.200.200.12";
+
+      # Preferred stable host addresses for LANs identified by their DHCP server.
+      # Unknown DHCP servers keep the ordinary DHCP lease.
+      dhcpServerAddressRules = [
+        {
+          # Highest-priority rule: CEIM-style network or equivalent static LAN.
+          dhcpServerAddress = "200.200.200.2";
+          preferredHostAddress = "200.200.200.12";
+        }
+        {
+          # 192.168.240.x LAN.
+          dhcpServerAddress = "192.168.240.1";
+          preferredHostAddress = "192.168.240.3";
+        }
+        {
+          # 192.168.120.x LAN.
+          dhcpServerAddress = "192.168.120.1";
+          preferredHostAddress = "192.168.120.3";
+        }
+        {
+          # 192.168.2.x LAN.
+          dhcpServerAddress = "192.168.2.1";
+          preferredHostAddress = "192.168.2.14";
+        }
+        {
+          # 192.168.1.x LAN.
+          dhcpServerAddress = "192.168.1.1";
+          preferredHostAddress = "192.168.1.14";
+        }
+      ];
+    };
+in {
+  # Apply this file only when the current machine's hostname is nixdev.
   config = lib.mkIf (config.networking.hostName == "nixdev") {
     # Mount NTFS partition at /winfs
     fileSystems."/winfs" = lib.mkForce {
@@ -32,89 +96,30 @@
 
     services.openssh.ports = [ 1814 ];
 
-    #  # Disable global DHCP to manage interfaces manually
-    # networking.useDHCP = false;
-
-    # # Configure the physical interface without DHCP
-    # networking.interfaces.enp8s0.useDHCP = false;
-
-    # # Define the bridge interface br0 and attach enp8s0 to it
-    # networking.bridges = {
-    #   br0 = {
-    #     interfaces = [ "enp8s0" ];
-    #   };
-    # };
-
-    # # Enable DHCP on the bridge interface
-    # networking.interfaces.br0.useDHCP = true;
-
-    # Enable NetworkManager
+    # Enable NetworkManager as the only network configuration manager.
     networking.networkmanager.enable = true;
 
-    # Disable the default networking configuration to avoid conflicts
+    # Disable NixOS' legacy DHCP path so it does not race NetworkManager.
     networking.useDHCP = false;
+
+    # Prevent the physical NIC from being configured directly; it is a bridge
+    # slave and gets connectivity through br0.
     networking.interfaces.enp8s0.useDHCP = false;
 
-    # Ensure NetworkManager manages all interfaces
+    # Keep the unmanaged list empty so NetworkManager can own br0 and enp8s0.
     networking.networkmanager.unmanaged = [ ];
 
-    # Disable NetworkManager-wait-online to prevent boot failures due to timeouts
+    # Do not block boot on wired network detection or DHCP timeouts.
     systemd.services."NetworkManager-wait-online".enable = false;
 
-    # Configure NetworkManager connection profiles for the bridge
-    networking.networkmanager.ensureProfiles.profiles = {
-      bridge-br0 = {
-        connection = {
-          id = "bridge-br0";
-          type = "bridge";
-          interface-name = "br0";
-          autoconnect = true;
-          autoconnect-priority = 100;
-        };
-        ipv4 = {
-          method = "auto"; # Enable DHCP for the bridge
-          may-fail = false;
-          dhcp-timeout = 20;
-        };
-        bridge = {
-          stp =
-            false; # Disable Spanning Tree Protocol (optional, enable if needed)
-          ageing-time = 300;
-        };
-      };
-      bridge-br0-static-fallback = {
-        connection = {
-          id = "bridge-br0-static-fallback";
-          type = "bridge";
-          interface-name = "br0";
-          autoconnect = true;
-          autoconnect-priority = -100;
-        };
-        ipv4 = {
-          method = "manual";
-          addresses = "200.200.200.12/24";
-          never-default = true;
-        };
-        ipv6 = {
-          method = "ignore";
-        };
-        bridge = {
-          stp =
-            false; # Disable Spanning Tree Protocol (optional, enable if needed)
-          ageing-time = 300;
-        };
-      };
-      bridge-slave-enp8s0 = {
-        connection = {
-          id = "bridge-slave-enp8s0";
-          type = "ethernet";
-          interface-name = "enp8s0";
-          master = "br0";
-          slave-type = "bridge";
-          autoconnect = true;
-        };
-      };
-    };
+    # Install the generated dispatcher hook into
+    # /etc/NetworkManager/dispatcher.d. It runs after DHCP events on br0.
+    networking.networkmanager.dispatcherScripts =
+      [ nixdevBridgeAddressCascade.dispatcherScript ];
+
+    # Generated bridge, no-DHCP fallback, and bridge-slave profiles.
+    networking.networkmanager.ensureProfiles.profiles =
+      nixdevBridgeAddressCascade.profiles;
 
   };
 }
