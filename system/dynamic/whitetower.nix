@@ -64,7 +64,7 @@
     boot.supportedFilesystems = [ "sshfs" ];
 
     fileSystems."/redtower" = {
-      device = "aaron@192.168.2.10:/";
+      device = "aaron@192.168.1.10:/";
       fsType = "sshfs";
       options = [
         "allow_other"
