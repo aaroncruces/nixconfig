@@ -1,18 +1,11 @@
-# autologin.nix
 { config, lib, pkgs, ... }:
 
 {
-  services.xserver.displayManager = {
+  services.displayManager = {
     autoLogin = {
       enable = true;
       user = "aaron";
     };
-    gdm = {
-      enable = true; # Already enabled in your nvidia.nix, but reinforced here
-      wayland = true; # Ensures Wayland support for Hyprland
-    };
+    defaultSession = "hyprland";
   };
-
-  # Set default session to Hyprland (matches the session desktop file name from programs.hyprland)
-  services.displayManager.defaultSession = "hyprland";
 }

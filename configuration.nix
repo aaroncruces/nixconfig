@@ -19,7 +19,7 @@
     ./system/static/packages.nix
     ./system/static/steam_udev.nix
     
-    # ./system/static/autologin.nix
+    ./system/dynamic/autologin.nix
 
     ./system/static/bluetooth.nix
 

@@ -83,6 +83,18 @@ if [ -z "$observed_dhcp_server_address" ]; then
   ')"
 fi
 
+read_dhcp_option_from_nmcli() {
+  option_name="$1"
+
+  "$nmcli" -t -f DHCP4.OPTION device show "$networkmanager_interface_name" 2>/dev/null | "$awk" -v option_name="$option_name" '
+    index($0, option_name " = ") {
+      sub(/^[^=]*= */, "", $0)
+      print
+      exit
+    }
+  '
+}
+
 # Empty by default means "unknown DHCP server, keep the DHCP lease".
 selected_static_address=""
 
@@ -108,6 +120,19 @@ fi
 # CIDR selected by the cascade for the known DHCP server.
 selected_static_cidr="$selected_static_address/@prefixLength@"
 
+# DHCP-derived routes and DNS are preserved when switching the active device
+# from DHCP addressing to the selected temporary manual address.
+observed_ipv4_gateway="${DHCP4_ROUTERS:-}"
+if [ -z "$observed_ipv4_gateway" ]; then
+  observed_ipv4_gateway="$(read_dhcp_option_from_nmcli routers)"
+fi
+observed_ipv4_gateway="${observed_ipv4_gateway%% *}"
+
+observed_ipv4_dns_servers="${DHCP4_DOMAIN_NAME_SERVERS:-}"
+if [ -z "$observed_ipv4_dns_servers" ]; then
+  observed_ipv4_dns_servers="$(read_dhcp_option_from_nmcli domain_name_servers)"
+fi
+
 # Remove stale managed static addresses from previous LANs before applying the
 # selected one.
 for managed_static_cidr in $managed_static_cidr_list; do
@@ -117,7 +142,30 @@ for managed_static_cidr in $managed_static_cidr_list; do
   fi
 done
 
-# Add or update the preferred static address for this LAN.
+# Make the preferred address part of NetworkManager's active, temporary device
+# configuration. This avoids a race where NetworkManager re-applies the DHCP
+# lease after a raw `ip address del`.
+nmcli_device_modify_args=(
+  device modify "$networkmanager_interface_name"
+  ipv4.method manual
+  ipv4.addresses "$selected_static_cidr"
+)
+
+if [ -n "$observed_ipv4_gateway" ]; then
+  nmcli_device_modify_args+=(ipv4.gateway "$observed_ipv4_gateway")
+fi
+
+if [ -n "$observed_ipv4_dns_servers" ]; then
+  nmcli_device_modify_args+=(ipv4.dns "$observed_ipv4_dns_servers")
+fi
+
+if ! "$nmcli" "${nmcli_device_modify_args[@]}"; then
+  "$logger" -t networkmanager-address-cascade "$configured_bridge_interface: failed to apply temporary NetworkManager address $selected_static_cidr"
+  exit 1
+fi
+
+# Add or update the preferred static address as a last-resort kernel sync. On a
+# healthy NetworkManager path this is already true after `device modify`.
 "$ip" -4 address replace "$selected_static_cidr" dev "$networkmanager_interface_name"
 
 # Remove the dynamic DHCP lease address so the bridge exposes only the preferred
