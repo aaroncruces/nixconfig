@@ -30,8 +30,12 @@ let
       # Declarative NetworkManager profile ID for the no-DHCP fallback bridge.
       noDhcpFallbackProfileId = "bridge-br0-static-fallback";
 
-      # Static IPv4 address used when the fallback profile is activated.
-      noDhcpFallbackAddress = "200.200.200.12";
+      # Gateway for the attached tower when Ethernet has no upstream DHCP.
+      # NetworkManager shares the Wi-Fi/default uplink on this subnet.
+      noDhcpFallbackAddress = "192.168.2.1";
+
+      # This direct cable serves one tower, which should receive 192.168.2.14.
+      noDhcpFallbackSharedDhcpRange = "192.168.2.14,192.168.2.14";
 
       # Preferred stable host addresses for LANs identified by their DHCP server.
       # Unknown DHCP servers keep the ordinary DHCP lease.
@@ -120,6 +124,12 @@ in {
     # Generated bridge, no-DHCP fallback, and bridge-slave profiles.
     networking.networkmanager.ensureProfiles.profiles =
       nixdevBridgeAddressCascade.profiles;
+
+    # Allow the tower to reach NetworkManager's shared DNS and DHCP services.
+    networking.firewall.interfaces.br0 = {
+      allowedTCPPorts = [ 53 ];
+      allowedUDPPorts = [ 53 67 ];
+    };
 
   };
 }

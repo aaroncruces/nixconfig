@@ -36,6 +36,11 @@
       # Required setting: IPv4 address used by the static fallback profile.
       noDhcpFallbackAddress = settings.noDhcpFallbackAddress;
 
+      # Optional DHCP pool for internet sharing when no upstream wired DHCP
+      # server answers. Null keeps the ordinary static fallback behavior.
+      noDhcpFallbackSharedDhcpRange =
+        settings.noDhcpFallbackSharedDhcpRange or null;
+
       # Required setting: ordered list of DHCP-server-address match rules.
       # Each rule has:
       #   - dhcpServerAddress: address advertised by the DHCP server.
@@ -179,7 +184,7 @@
           };
         };
 
-        # Static fallback bridge profile. This handles the "no DHCP server"
+        # Fallback bridge profile. This handles the "no DHCP server"
         # branch without custom DHCP probing logic in the dispatcher.
         ${noDhcpFallbackProfileId} = {
           # NetworkManager connection metadata for the fallback bridge.
@@ -202,14 +207,17 @@
 
           # IPv4 behavior for the fallback bridge profile.
           ipv4 = {
-            # Manual static address used when DHCP is unavailable.
-            method = "manual";
+            # Shared mode provides DHCP, DNS and NAT through the default uplink.
+            method =
+              if noDhcpFallbackSharedDhcpRange != null then "shared" else "manual";
 
             # Static address plus prefix length for the fallback LAN.
             addresses = "${noDhcpFallbackAddress}/${toString prefixLength}";
 
             # Avoid installing a default route for the fallback-only network.
             never-default = true;
+          } // lib.optionalAttrs (noDhcpFallbackSharedDhcpRange != null) {
+            shared-dhcp-range = noDhcpFallbackSharedDhcpRange;
           };
 
           # Disable IPv6 on the fallback profile to avoid partial fallback state.
