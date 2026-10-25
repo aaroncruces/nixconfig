@@ -1,6 +1,53 @@
 { config, lib, pkgs, ... }:
 
-{
+let
+  # Import the same reusable bridge/address-cascade builder used by nixdev.
+  networkmanagerBridgeAddressCascade =
+    import ../lib/networkmanager-bridge-address-cascade.nix {
+      inherit lib pkgs;
+    };
+
+  # Build whitetower's NetworkManager bridge configuration. DHCP is tried first;
+  # once the DHCP server identifies the LAN, the dispatcher swaps in the stable
+  # preferred address for known networks.
+  whitetowerBridgeAddressCascade =
+    networkmanagerBridgeAddressCascade.mkBridgeDhcpAddressCascade {
+      # Name of the Linux bridge interface exposed to the rest of the system.
+      bridgeInterface = "br0";
+
+      # Physical NIC that NetworkManager enslaves into the bridge.
+      ethernetInterface = "enp4s0";
+
+      # Declarative NetworkManager profile ID for the normal DHCP bridge.
+      dhcpProfileId = "bridge-br0";
+
+      # Declarative NetworkManager profile ID for the no-DHCP fallback bridge.
+      noDhcpFallbackProfileId = "bridge-br0-static-fallback";
+
+      # Static IPv4 address used when the fallback profile is activated.
+      noDhcpFallbackAddress = "192.168.1.12";
+
+      # Preferred stable host addresses for LANs identified by their DHCP server.
+      # Unknown DHCP servers keep the ordinary DHCP lease.
+      dhcpServerAddressRules = [
+        {
+          # 192.168.0.x LAN.
+          dhcpServerAddress = "192.168.0.1";
+          preferredHostAddress = "192.168.0.12";
+        }
+        {
+          # 192.168.1.x LAN.
+          dhcpServerAddress = "192.168.1.1";
+          preferredHostAddress = "192.168.1.12";
+        }
+        {
+          # 192.168.2.x LAN.
+          dhcpServerAddress = "192.168.2.1";
+          preferredHostAddress = "192.168.2.12";
+        }
+      ];
+    };
+in {
   config = lib.mkIf (config.networking.hostName == "whitetower") {
     # Mount NTFS partition at /winfs
     fileSystems."/winfs" = lib.mkForce {
@@ -79,44 +126,30 @@
       ];
     };
 
-    # ------------------------------------------------------
-    # Enable NetworkManager
+    # Enable NetworkManager as the only network configuration manager.
     networking.networkmanager.enable = true;
 
-    # Disable the default networking configuration to avoid conflicts
+    # Disable NixOS' legacy DHCP path so it does not race NetworkManager.
     networking.useDHCP = false;
+
+    # Prevent the physical NIC from being configured directly; it is a bridge
+    # slave and gets connectivity through br0.
     networking.interfaces.enp4s0.useDHCP = false;
 
-    # Ensure NetworkManager manages all interfaces
+    # Keep the unmanaged list empty so NetworkManager can own br0 and enp4s0.
     networking.networkmanager.unmanaged = [ ];
 
-    # Configure NetworkManager connection profiles for the bridge
-    networking.networkmanager.ensureProfiles.profiles = {
-      bridge-br0 = {
-        connection = {
-          id = "bridge-br0";
-          type = "bridge";
-          interface-name = "br0";
-          autoconnect = true;
-        };
-        ipv4 = { method = "auto"; };
-        bridge = {
-          stp =
-            false; # Disable Spanning Tree Protocol (optional, enable if needed)
-          ageing-time = 300;
-        };
-      };
-      bridge-slave-enp4s0 = {
-        connection = {
-          id = "bridge-slave-enp4s0";
-          type = "ethernet";
-          interface-name = "enp4s0";
-          master = "br0";
-          slave-type = "bridge";
-          autoconnect = true;
-        };
-      };
-    };
+    # Do not block boot on wired network detection or DHCP timeouts.
+    systemd.services."NetworkManager-wait-online".enable = false;
+
+    # Install the generated dispatcher hook into
+    # /etc/NetworkManager/dispatcher.d. It runs after DHCP events on br0.
+    networking.networkmanager.dispatcherScripts =
+      [ whitetowerBridgeAddressCascade.dispatcherScript ];
+
+    # Generated bridge, no-DHCP fallback, and bridge-slave profiles.
+    networking.networkmanager.ensureProfiles.profiles =
+      whitetowerBridgeAddressCascade.profiles;
 
   };
 }
